@@ -132,26 +132,36 @@ const month=new Date().toISOString().slice(0,7).replace("-","");
 
 const RADIO_CONTROL_KEY="kulzzyCompetitionAudioControl";
 
+/* SAME-ORIGIN RADIO COMMUNICATION */
+const radioChannel=typeof BroadcastChannel!=="undefined"
+?new BroadcastChannel("kulzzy-radio-audio-control")
+:null;
+
 let switchingSong=false;
 let switchingTimer=null;
 
 function sendRadioControl(action){
 
-try{
-
-localStorage.setItem(
-RADIO_CONTROL_KEY,
-JSON.stringify({
+const message={
 action:action,
 timestamp:Date.now(),
 nonce:Math.random().toString(36).slice(2)
-})
-);
+};
 
+/* BroadcastChannel reaches the radio player inside the app iframe. */
+try{
+if(radioChannel){
+radioChannel.postMessage(message);
+}
 }catch(error){
+console.warn("Radio channel unavailable:",error);
+}
 
-console.warn("Radio communication unavailable:",error);
-
+/* Keep localStorage as a fallback. */
+try{
+localStorage.setItem(RADIO_CONTROL_KEY,JSON.stringify(message));
+}catch(error){
+console.warn("Radio storage communication unavailable:",error);
 }
 
 }
