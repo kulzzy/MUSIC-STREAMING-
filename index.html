@@ -17,8 +17,6 @@ color:#fff;
 font-family:Arial,sans-serif
 }
 
-/* BACK BUTTON */
-
 .back-area{
 width:100%;
 padding:15px 14px 5px;
@@ -38,35 +36,22 @@ color:#06122a;
 font-size:14px;
 font-weight:900;
 cursor:pointer;
-box-shadow:
-0 0 5px #ff0000,
-0 0 10px #ff0000,
-0 0 18px rgba(255,0,0,.9);
+box-shadow:0 0 5px #ff0000,0 0 10px #ff0000,0 0 18px rgba(255,0,0,.9);
 animation:redBlink 1s infinite;
 }
 
 @keyframes redBlink{
 0%,100%{
-box-shadow:
-0 0 5px #ff0000,
-0 0 10px #ff0000,
-0 0 18px rgba(255,0,0,.9);
+box-shadow:0 0 5px #ff0000,0 0 10px #ff0000,0 0 18px rgba(255,0,0,.9);
 border-color:#ff2525;
 }
 50%{
-box-shadow:
-0 0 2px #ff0000,
-0 0 5px #ff0000,
-0 0 10px rgba(255,0,0,.4);
+box-shadow:0 0 2px #ff0000,0 0 5px #ff0000,0 0 10px rgba(255,0,0,.4);
 border-color:#ff9999;
 }
 }
 
-.back-button:active{
-transform:scale(.96);
-}
-
-/* HEADER */
+.back-button:active{transform:scale(.96)}
 
 header{
 text-align:center;
@@ -81,16 +66,9 @@ font-size:clamp(22px,5vw,34px);
 margin:0 0 8px
 }
 
-header p{
-margin:0;
-color:#e8edf7
-}
+header p{margin:0;color:#e8edf7}
 
-.wrap{
-max-width:1000px;
-margin:auto;
-padding:16px
-}
+.wrap{max-width:1000px;margin:auto;padding:16px}
 
 .winner{
 background:linear-gradient(120deg,#332b00,#122447);
@@ -101,41 +79,18 @@ text-align:center;
 margin-bottom:18px
 }
 
-.winner h2,.section-title{
-color:var(--g)
-}
-
-.winner h2{
-margin:0 0 10px
-}
-
+.winner h2,.section-title{color:var(--g)}
+.winner h2{margin:0 0 10px}
 .winner img{
-width:92px;
-height:92px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid var(--g)
+width:92px;height:92px;border-radius:50%;
+object-fit:cover;border:2px solid var(--g)
 }
+.winner strong{display:block;font-size:20px;margin-top:8px}
 
-.winner strong{
-display:block;
-font-size:20px;
-margin-top:8px
-}
-
-.meta{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin:12px 0
-}
-
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
 .pill{
-background:#14284b;
-border:1px solid #2a426a;
-border-radius:999px;
-padding:8px 12px;
-font-size:13px
+background:#14284b;border:1px solid #2a426a;
+border-radius:999px;padding:8px 12px;font-size:13px
 }
 
 .songs{
@@ -156,69 +111,37 @@ min-width:0
 }
 
 .song img{
-width:70px;
-height:70px;
-border-radius:10px;
-object-fit:cover;
-background:#162749
+width:70px;height:70px;border-radius:10px;
+object-fit:cover;background:#162749
 }
 
-.info{
-min-width:0;
-flex:1
-}
-
-.song h3{
-font-size:16px;
-margin:0 0 5px;
-overflow-wrap:anywhere
-}
-
-.song p{
-font-size:13px;
-color:var(--m);
-margin:0 0 10px
-}
+.info{min-width:0;flex:1}
+.song h3{font-size:16px;margin:0 0 5px;overflow-wrap:anywhere}
+.song p{font-size:13px;color:var(--m);margin:0 0 10px}
 
 .btn{
-display:inline-block;
-background:var(--g);
-color:#06122a;
-text-decoration:none;
-font-weight:bold;
-border:0;
-border-radius:9px;
-padding:10px 13px;
-cursor:pointer
+display:inline-block;background:var(--g);color:#06122a;
+text-decoration:none;font-weight:bold;border:0;
+border-radius:9px;padding:10px 13px;cursor:pointer
 }
 
 .empty{
-padding:22px;
-text-align:center;
-color:var(--m);
-background:var(--p);
-border-radius:12px
+padding:22px;text-align:center;color:var(--m);
+background:var(--p);border-radius:12px
 }
 
-.foot{
-text-align:center;
-color:var(--m);
-padding:28px 10px;
-font-size:13px
-}
+.foot{text-align:center;color:var(--m);padding:28px 10px;font-size:13px}
 </style>
 </head>
 
 <body>
 
-<!-- BACK BUTTON -->
 <div class="back-area">
 <button class="back-button" type="button" onclick="goBackToVoters()">
 ← BACK
 </button>
 </div>
 
-<!-- TITLE -->
 <header>
 <h1>BEST STREAMING SONG OF THE MONTH</h1>
 <p>Your music. Your moment. Your stage.</p>
@@ -253,22 +176,30 @@ KULZZY RADIO · Celebrating Lives Everyday
 </main>
 
 <script>
-/* SEND BACK REQUEST TO KULZZY NAVIGATION */
+/*
+FIXED BACK BUTTON:
+The Best Streaming Song page is loaded directly inside
+the VOTERS iframe. Send the BACK request to its parent
+navigation page, not to the song/player browser history.
+*/
 function goBackToVoters(){
 
-    if(window.parent===window){
-        window.history.back();
+    const message={
+        type:"KULZZY_APP_BACK",
+        source:"KULZZY_MUSIC_STREAMING_PAGE"
+    };
+
+    if(window.parent!==window){
+
+        window.parent.postMessage(
+            message,
+            "https://krn-navigation-bar.pages.dev"
+        );
+
         return;
     }
 
-    window.parent.postMessage(
-        {
-            type:"KULZZY_APP_BACK",
-            source:"KULZZY_MUSIC_STREAMING_PAGE"
-        },
-        "https://krn-navigation-bar.pages.dev"
-    );
-
+    window.history.back();
 }
 </script>
 
@@ -301,7 +232,7 @@ signInAnonymously(auth).catch(console.warn);
 function dt(v){
 if(!v)return"TBA";
 const d=new Date(v);
-return isNaN(d)?"TBA":d.toLocaleDateString()
+return isNaN(d)?"TBA":d.toLocaleDateString();
 }
 
 function render(){
@@ -309,7 +240,7 @@ function render(){
 const list=Object.entries(songs).map(([id,s])=>{
 let n=0;
 Object.values(votes[id]||{}).forEach(month=>n+=Object.keys(month||{}).length);
-return{id,...s,plays:n}
+return{id,...s,plays:n};
 }).filter(s=>s.active!==false).sort((a,b)=>b.plays-a.plays);
 
 $("status").textContent=settings.openDate&&settings.closeDate?
@@ -348,25 +279,25 @@ list.map(card).join(""):
 
 onValue(ref(db,"songs"),s=>{
 songs=s.val()||{};
-render()
+render();
 },e=>{
 $("allSongs").innerHTML='<div class="empty">Could not load songs. Check Firebase rules.</div>';
-console.error(e)
+console.error(e);
 });
 
 onValue(ref(db,"votes"),s=>{
 votes=s.val()||{};
-render()
+render();
 });
 
 onValue(ref(db,"settings"),s=>{
 settings=s.val()||{};
-render()
+render();
 });
 
 onValue(ref(db,"winner"),s=>{
 winner=s.val()||{};
-render()
+render();
 });
 
 </script>
