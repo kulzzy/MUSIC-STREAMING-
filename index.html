@@ -205,7 +205,7 @@ url.searchParams.set("title",title);
 return url.toString();
 }
 
-/* SHARE SONG */
+/* SHARE SONG WITH THE ACTUAL LINK INCLUDED IN THE MESSAGE */
 
 async function shareSong(id,button){
 
@@ -218,12 +218,17 @@ const link=createSongLink(id);
 const title=song.title||"Untitled song";
 const artist=song.artist||"Unknown artiste";
 
+/* THE CLICKABLE LINK IS PART OF THE MESSAGE */
+
 const message=
 "🎵 Listen to "+title+
 " by "+artist+
 " on Kulzzy Radio!\n\n"+
 "Your music. Your moment. Your stage.\n\n"+
+"LISTEN HERE:\n"+
 link;
+
+/* ANDROID AND OTHER DEVICE SHARE MENU */
 
 if(navigator.share){
 
@@ -231,9 +236,7 @@ try{
 
 await navigator.share({
 title:title+" | Kulzzy Radio",
-text:
-"Listen to "+title+" by "+artist+" on Kulzzy Radio.",
-url:link
+text:message
 });
 
 return;
@@ -242,9 +245,13 @@ return;
 
 if(error.name==="AbortError")return;
 
+console.warn("Sharing unavailable:",error);
+
 }
 
 }
+
+/* COPY THE COMPLETE MESSAGE INCLUDING THE LINK */
 
 try{
 
@@ -255,14 +262,25 @@ await navigator.clipboard.writeText(message);
 }else{
 
 const input=document.createElement("textarea");
+
 input.value=message;
 input.style.position="fixed";
-input.style.opacity="0";
+input.style.top="0";
+input.style.left="-9999px";
 
 document.body.appendChild(input);
+
+input.focus();
 input.select();
-document.execCommand("copy");
+input.setSelectionRange(0,input.value.length);
+
+const copied=document.execCommand("copy");
+
 input.remove();
+
+if(!copied){
+throw new Error("Copy failed");
+}
 
 }
 
@@ -272,12 +290,13 @@ button.textContent="✓ LINK COPIED";
 
 setTimeout(()=>{
 button.textContent=oldText;
-},2500);
+},3000);
 
 }catch(error){
 
 console.error(error);
-prompt("Copy this song link:",link);
+
+prompt("Copy this complete message and share it:",message);
 
 }
 
@@ -555,7 +574,7 @@ return;
 
 });
 
-/* OPEN THE SONG FROM A SHARED LINK */
+/* OPEN THE SPECIFIC SONG FROM A SHARED LINK */
 
 function openSharedSong(){
 
