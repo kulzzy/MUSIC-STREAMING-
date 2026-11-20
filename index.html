@@ -186,7 +186,7 @@ KULZZY RADIO · Celebrating Lives Everyday
 /* CLOSE MUSIC PAGE */
 function closeMusicPage(){
 
-    /* If embedded inside another page, notify its parent. */
+    // If embedded inside another page, notify its parent.
     if(window.parent && window.parent !== window){
         window.parent.postMessage({
             type:"KULZZY_APP_BACK"
@@ -194,23 +194,9 @@ function closeMusicPage(){
         return;
     }
 
-    /* If opened as a separate tab, try to close it. */
+    // Attempt to close the current tab.
+    // Never navigate backwards to a previously played song.
     window.close();
-
-    /* If the browser refuses, return to the previous page. */
-    setTimeout(function(){
-
-        if(!window.closed){
-
-            if(window.history.length > 1){
-                window.history.back();
-            }else{
-                alert("Please use your browser's Back button to leave this page.");
-            }
-
-        }
-
-    },500);
 }
 </script><script type="module">
 
