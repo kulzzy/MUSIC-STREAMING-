@@ -44,9 +44,7 @@ cursor:pointer;
 box-shadow:0 0 12px rgba(255,215,0,.35);
 }
 
-.close-button:active{
-transform:scale(.92)
-}
+.close-button:active{transform:scale(.92)}
 
 header{
 text-align:center;
@@ -215,56 +213,14 @@ KULZZY RADIO · Celebrating Lives Everyday
 </main>
 
 <script>
-
-/*
-CLOSE MUSIC PAGE
-
-Directly activates the existing navigation BACK button.
-No browser history and no new navigation system.
-*/
-
+/* CLOSE MUSIC PAGE */
 function closeMusicPage(){
-
-    try{
-
-        if(window.parent && window.parent !== window){
-
-            const parentDocument = window.parent.document;
-
-            const backButton =
-                parentDocument.querySelector(
-                    "#kulzzyVotersDetail .kulzzyVoterBack"
-                ) ||
-                parentDocument.querySelector(
-                    ".kulzzyVoterBack"
-                );
-
-            if(backButton){
-                backButton.click();
-                return;
-            }
-
-            if(
-                typeof window.parent.goBackInKulzzyNavigation ===
-                "function"
-            ){
-                window.parent.goBackInKulzzyNavigation();
-                return;
-            }
-
-            console.error("Kulzzy VOTERS back button was not found.");
-
-            return;
-        }
-
-    }catch(error){
-
-        console.error("Could not access Kulzzy navigation:",error);
-
+    if(window.parent && window.parent !== window){
+        window.parent.postMessage({
+            type:"KULZZY_APP_BACK"
+        },"*");
     }
-
 }
-
 </script>
 
 <script type="module">
@@ -333,12 +289,10 @@ const card=s=>
 '</div></article>';
 
 $("topSongs").innerHTML=list.length?
-list.slice(0,3).map(card).join(""):
-'<div class="empty">No songs have been added yet.</div>';
+list.slice(0,3).map(card).join(""):'<div class="empty">No songs have been added yet.</div>';
 
 $("allSongs").innerHTML=list.length?
-list.map(card).join(""):
-'<div class="empty">Songs will appear here soon.</div>';
+list.map(card).join(""):'<div class="empty">Songs will appear here soon.</div>';
 
 }
 
