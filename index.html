@@ -16,32 +16,33 @@ font-family:Arial,sans-serif
 
 .close-area{
 width:100%;
-height:54px;
-padding:8px 14px;
+min-height:54px;
+padding:8px 10px;
 display:flex;
-justify-content:flex-end;
+justify-content:flex-start;
 align-items:center;
 background:linear-gradient(140deg,#0b2046,#06122a);
 }
 
 .close-button{
-width:38px;
-height:38px;
-display:flex;
-align-items:center;
-justify-content:center;
-border:1px solid var(--g);
-border-radius:50%;
-background:var(--g);
-color:#06122a;
-font-size:27px;
-font-weight:900;
-line-height:1;
+display:block;
+width:100%;
+max-width:260px;
+margin:0;
+padding:11px 15px;
+border:1px solid #ffd700;
+border-radius:9px;
+background:#ffd700;
+color:#07152f;
+font-size:12px;
+font-weight:bold;
 cursor:pointer;
-box-shadow:0 0 12px rgba(255,215,0,.35);
+text-align:center;
+touch-action:manipulation;
+-webkit-tap-highlight-color:transparent;
 }
 
-.close-button:active{transform:scale(.92)}
+.close-button:active{background:#e6bd00}
 
 header{
 text-align:center;
@@ -165,8 +166,10 @@ font-size:13px
 <button
 class="close-button"
 type="button"
-aria-label="Close music streaming page"
-onclick="closeMusicPage()">×</button>
+aria-label="Back to voting competitions"
+onclick="closeMusicPage()">
+← BACK TO VOTING COMPETITIONS
+</button>
 </div><header>
 <h1>BEST STREAMING SONG OF THE MONTH</h1>
 <p>Your music. Your moment. Your stage.</p>
@@ -183,10 +186,9 @@ onclick="closeMusicPage()">×</button>
 </div><div class="foot">
 KULZZY RADIO · Celebrating Lives Everyday
 </div></main><script>
-/* CLOSE MUSIC PAGE */
+/* BACK TO VOTING COMPETITIONS */
 function closeMusicPage(){
 
-    // If embedded inside another page, notify its parent.
     if(window.parent && window.parent !== window){
         window.parent.postMessage({
             type:"KULZZY_APP_BACK"
@@ -194,8 +196,6 @@ function closeMusicPage(){
         return;
     }
 
-    // Attempt to close the current tab.
-    // Never navigate backwards to a previously played song.
     window.close();
 }
 </script><script type="module">
