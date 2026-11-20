@@ -1,9 +1,12 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06122a">
-<title>Best Streaming Song of the Month | Kulzzy Radio</title><style>
+<title>Best Streaming Song of the Month | Kulzzy Radio</title>
+
+<style>
 :root{--n:#06122a;--p:#0c1c3b;--g:#ffd700;--m:#b8c2d8}
 *{box-sizing:border-box}
 
@@ -203,40 +206,73 @@ color:var(--m);
 padding:28px 10px;
 font-size:13px
 }
-</style></head><body><!-- BACK BUTTON --><div class="back-area">
-<button class="back-button" onclick="goBackToVoters()">
+</style>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+<div class="back-area">
+<button class="back-button" type="button" onclick="goBackToVoters()">
 ← BACK
 </button>
-</div><!-- TITLE --><header>
+</div>
+
+<!-- TITLE -->
+<header>
 <h1>BEST STREAMING SONG OF THE MONTH</h1>
 <p>Your music. Your moment. Your stage.</p>
-</header><main class="wrap"><section class="winner">
+</header>
+
+<main class="wrap">
+
+<section class="winner">
 <h2>🏆 OFFICIAL WINNER</h2>
 <div id="winnerBox">Winner will be announced here.</div>
-</section><div class="meta">
+</section>
+
+<div class="meta">
 <span class="pill" id="status">Loading competition…</span>
 <span class="pill" id="dates">Opening and closing dates not set</span>
-</div><h2 class="section-title">🔥 CURRENT TOP 3</h2>
+</div>
+
+<h2 class="section-title">🔥 CURRENT TOP 3</h2>
 <div class="songs" id="topSongs">
 <div class="empty">Loading rankings…</div>
-</div><h2 class="section-title">🎵 ALL SONGS</h2>
+</div>
+
+<h2 class="section-title">🎵 ALL SONGS</h2>
 <div class="songs" id="allSongs">
 <div class="empty">Loading songs…</div>
-</div><div class="foot">
+</div>
+
+<div class="foot">
 KULZZY RADIO · Celebrating Lives Everyday
-</div></main><script>
+</div>
+
+</main>
+
+<script>
+/* SEND BACK REQUEST TO KULZZY NAVIGATION */
 function goBackToVoters(){
 
-  window.parent.postMessage(
-    {
-      type:"KULZZY_APP_BACK",
-      source:"KULZZY_MUSIC_STREAMING_PAGE"
-    },
-    "https://krn-navigation-bar.pages.dev"
-  );
+    if(window.parent===window){
+        window.history.back();
+        return;
+    }
+
+    window.parent.postMessage(
+        {
+            type:"KULZZY_APP_BACK",
+            source:"KULZZY_MUSIC_STREAMING_PAGE"
+        },
+        "https://krn-navigation-bar.pages.dev"
+    );
 
 }
-</script><script type="module">
+</script>
+
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -333,5 +369,7 @@ winner=s.val()||{};
 render()
 });
 
-</script></body>
+</script>
+
+</body>
 </html>
