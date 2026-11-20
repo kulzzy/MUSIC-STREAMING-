@@ -4,14 +4,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06122a">
 <title>Best Streaming Song of the Month | Kulzzy Radio</title><style>
-:root{--n:#06122a;--p:#0c1c3b;--g:#ffd700;--m:#b8c2d8}
+:root{
+--n:#06122a;
+--p:#0c1c3b;
+--g:#ffd700;
+--m:#b8c2d8;
+}
+
 *{box-sizing:border-box}
 
 body{
 margin:0;
 background:var(--n);
 color:#fff;
-font-family:Arial,sans-serif
+font-family:Arial,sans-serif;
 }
 
 .close-area{
@@ -19,47 +25,46 @@ width:100%;
 min-height:54px;
 padding:8px 10px;
 display:flex;
-justify-content:flex-start;
 align-items:center;
 background:linear-gradient(140deg,#0b2046,#06122a);
 }
 
 .close-button{
-display:block;
 width:100%;
 max-width:260px;
-margin:0;
 padding:11px 15px;
-border:1px solid #ffd700;
+border:1px solid var(--g);
 border-radius:9px;
-background:#ffd700;
+background:var(--g);
 color:#07152f;
 font-size:12px;
 font-weight:bold;
 cursor:pointer;
-text-align:center;
-touch-action:manipulation;
--webkit-tap-highlight-color:transparent;
 }
-
-.close-button:active{background:#e6bd00}
 
 header{
 text-align:center;
 padding:15px 14px 18px;
 background:linear-gradient(140deg,#0b2046,#06122a);
-border-bottom:1px solid #293b5d
+border-bottom:1px solid #293b5d;
 }
 
 header h1{
 color:var(--g);
 font-size:clamp(22px,5vw,34px);
-margin:0 0 8px
+margin:0 0 8px;
 }
 
-header p{margin:0;color:#e8edf7}
+header p{
+margin:0;
+color:#e8edf7;
+}
 
-.wrap{max-width:1000px;margin:auto;padding:16px}
+.wrap{
+max-width:1000px;
+margin:auto;
+padding:16px;
+}
 
 .winner{
 background:linear-gradient(120deg,#332b00,#122447);
@@ -67,10 +72,13 @@ border:1px solid var(--g);
 border-radius:16px;
 padding:18px;
 text-align:center;
-margin-bottom:18px
+margin-bottom:18px;
 }
 
-.winner h2,.section-title{color:var(--g)}
+.winner h2,.section-title{
+color:var(--g);
+}
+
 .winner h2{margin:0 0 10px}
 
 .winner img{
@@ -78,29 +86,34 @@ width:92px;
 height:92px;
 border-radius:50%;
 object-fit:cover;
-border:2px solid var(--g)
+border:2px solid var(--g);
 }
 
 .winner strong{
 display:block;
 font-size:20px;
-margin-top:8px
+margin-top:8px;
 }
 
-.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.meta{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:12px 0;
+}
 
 .pill{
 background:#14284b;
 border:1px solid #2a426a;
 border-radius:999px;
 padding:8px 12px;
-font-size:13px
+font-size:13px;
 }
 
 .songs{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:12px
+gap:12px;
 }
 
 .song{
@@ -111,7 +124,7 @@ padding:14px;
 display:flex;
 gap:12px;
 align-items:center;
-min-width:0
+min-width:0;
 }
 
 .song img{
@@ -119,33 +132,35 @@ width:70px;
 height:70px;
 border-radius:10px;
 object-fit:cover;
-background:#162749
+background:#162749;
 }
 
-.info{min-width:0;flex:1}
+.info{
+min-width:0;
+flex:1;
+}
 
 .song h3{
 font-size:16px;
 margin:0 0 5px;
-overflow-wrap:anywhere
+overflow-wrap:anywhere;
 }
 
 .song p{
 font-size:13px;
 color:var(--m);
-margin:0 0 10px
+margin:0 0 10px;
 }
 
 .btn{
 display:inline-block;
 background:var(--g);
 color:#06122a;
-text-decoration:none;
 font-weight:bold;
 border:0;
 border-radius:9px;
 padding:10px 13px;
-cursor:pointer
+cursor:pointer;
 }
 
 .empty{
@@ -153,20 +168,64 @@ padding:22px;
 text-align:center;
 color:var(--m);
 background:var(--p);
-border-radius:12px
+border-radius:12px;
+}
+
+.player{
+display:none;
+background:linear-gradient(140deg,#122b50,#0c1c3b);
+border:2px solid var(--g);
+border-radius:16px;
+padding:18px;
+margin:18px 0;
+text-align:center;
+}
+
+.player.show{display:block}
+
+.player img{
+width:120px;
+height:120px;
+border-radius:14px;
+object-fit:cover;
+margin:10px auto;
+}
+
+.player h2{
+color:var(--g);
+font-size:20px;
+}
+
+.player audio{
+width:100%;
+margin:15px 0;
+}
+
+.player-status{
+background:#10284b;
+padding:12px;
+border-radius:10px;
+font-size:13px;
+color:#fff;
+margin-top:10px;
+}
+
+.player-note{
+color:var(--m);
+font-size:12px;
+line-height:1.5;
 }
 
 .foot{
 text-align:center;
 color:var(--m);
 padding:28px 10px;
-font-size:13px
+font-size:13px;
 }
 </style></head><body><div class="close-area">
 <button
 class="close-button"
 type="button"
-aria-label="Back to voting competitions"
 onclick="closeMusicPage()">
 ← BACK TO VOTING COMPETITIONS
 </button>
@@ -175,123 +234,613 @@ onclick="closeMusicPage()">
 <p>Your music. Your moment. Your stage.</p>
 </header><main class="wrap"><section class="winner">
 <h2>🏆 OFFICIAL WINNER</h2>
-<div id="winnerBox">Winner will be announced here.</div>
+<div id="winnerBox">
+Winner will be announced here.
+</div>
 </section><div class="meta">
 <span class="pill" id="status">Loading competition…</span>
 <span class="pill" id="dates">Opening and closing dates not set</span>
-</div><h2 class="section-title">🔥 CURRENT TOP 3</h2><div class="songs" id="topSongs">
+</div><!-- INLINE MUSIC PLAYER --><section class="player" id="playerBox"><h2>🎵 NOW PLAYING</h2><img id="playerPhoto" alt="Song artwork" hidden><h3 id="playerTitle">Select a song</h3><p id="playerArtist"></p><audio
+id="audio"
+controls
+preload="none"
+playsinline>
+</audio>
+
+<div class="player-status" id="playerStatus">
+Select a song below to start listening.
+</div><p class="player-note">
+Keep listening for at least 60 seconds to earn one qualifying stream.
+One qualifying stream per account, per song, per month.
+</p></section><h2 class="section-title">🔥 CURRENT TOP 3</h2><div class="songs" id="topSongs">
 <div class="empty">Loading rankings…</div>
 </div><h2 class="section-title">🎵 ALL SONGS</h2><div class="songs" id="allSongs">
 <div class="empty">Loading songs…</div>
 </div><div class="foot">
 KULZZY RADIO · Celebrating Lives Everyday
 </div></main><script>
-/* BACK TO VOTING COMPETITIONS */
 function closeMusicPage(){
 
-    if(window.parent && window.parent !== window){
-        window.parent.postMessage({
-            type:"KULZZY_APP_BACK"
-        },"*");
-        return;
-    }
+if(window.parent && window.parent !== window){
 
-    window.close();
+window.parent.postMessage({
+type:"KULZZY_APP_BACK"
+},"*");
+
+}else{
+
+window.history.back();
+
+}
 }
 </script><script type="module">
 
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{
+initializeApp
+}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import{
+getDatabase,
+ref,
+get,
+set,
+onValue
+}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+import{
+getAuth,
+signInAnonymously
+}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* ORIGINAL FIREBASE CONFIGURATION - PRESERVED */
 
 const cfg={
+
 apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkUXfb9pv9E",
+
 authDomain:"music-streaming-e724e.firebaseapp.com",
+
 databaseURL:"https://music-streaming-e724e-default-rtdb.europe-west1.firebasedatabase.app",
+
 projectId:"music-streaming-e724e",
+
 storageBucket:"music-streaming-e724e.firebasestorage.app",
+
 messagingSenderId:"543568067808",
+
 appId:"1:543568067808:web:495540085bf8b3e080a485",
+
 measurementId:"G-7KMXGYVCF9"
+
 };
 
-const app=initializeApp(cfg),
-db=getDatabase(app),
-auth=getAuth(app),
-$=x=>document.getElementById(x),
-esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-let songs={},votes={},settings={},winner={};
+const app=initializeApp(cfg);
 
-signInAnonymously(auth).catch(console.warn);
+const db=getDatabase(app);
+
+const auth=getAuth(app);
+
+const $=id=>document.getElementById(id);
+
+const month=new Date().toISOString().slice(0,7).replace("-","");
+
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[c]));
+
+
+let songs={};
+let votes={};
+let settings={};
+let winner={};
+
+let currentSong=null;
+let seconds=0;
+let timer=null;
+let done=false;
+let started=false;
+let authReady=false;
+
+
+/* AUTHENTICATION */
+
+const authPromise=signInAnonymously(auth)
+.then(()=>{
+authReady=true;
+})
+.catch(error=>{
+console.error(error);
+throw error;
+});
+
+
+/* DATE FORMAT */
 
 function dt(v){
+
 if(!v)return"TBA";
+
 const d=new Date(v);
+
 return isNaN(d)?"TBA":d.toLocaleDateString();
+
 }
+
+
+/* COMPETITION STATUS */
+
+function competitionOpen(){
+
+if(settings.openDate &&
+Date.now()<new Date(settings.openDate).getTime()){
+
+return false;
+
+}
+
+if(settings.closeDate &&
+Date.now()>new Date(settings.closeDate).getTime()){
+
+return false;
+
+}
+
+return true;
+
+}
+
+
+/* SONG URL */
+
+function songURL(url){
+
+let u=url||"";
+
+const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+
+if(m){
+
+u="https://drive.google.com/uc?export=download&id="+m[1];
+
+}
+
+return u;
+
+}
+
+
+/* QUALIFYING STREAM COUNTS */
+
+function getPlays(id){
+
+let n=0;
+
+Object.values(votes[id]||{}).forEach(monthData=>{
+
+n+=Object.keys(monthData||{}).length;
+
+});
+
+return n;
+
+}
+
+
+/* STOP PREVIOUS PLAYER */
+
+function stopPlayer(){
+
+const audio=$("audio");
+
+if(timer){
+
+clearInterval(timer);
+
+timer=null;
+
+}
+
+audio.pause();
+
+audio.removeAttribute("src");
+
+audio.load();
+
+started=false;
+
+seconds=0;
+
+done=false;
+
+currentSong=null;
+
+}
+
+
+/* OPEN SONG INSIDE THIS SCREEN */
+
+async function playSong(id){
+
+const song=songs[id];
+
+if(!song){
+
+$("playerStatus").textContent="Song not found.";
+
+return;
+
+}
+
+stopPlayer();
+
+currentSong=id;
+
+const box=$("playerBox");
+
+box.classList.add("show");
+
+$("playerTitle").textContent=song.title||"Untitled song";
+
+$("playerArtist").textContent=song.artist||"";
+
+const photo=$("playerPhoto");
+
+if(song.photo){
+
+photo.src=song.photo;
+
+photo.hidden=false;
+
+}else{
+
+photo.hidden=true;
+
+}
+
+const audio=$("audio");
+
+const url=songURL(song.url);
+
+if(!url){
+
+$("playerStatus").textContent="This song has no playable audio link.";
+
+return;
+
+}
+
+if(!competitionOpen()){
+
+$("playerStatus").textContent="The competition is not currently open.";
+
+return;
+
+}
+
+audio.src=url;
+
+audio.load();
+
+$("playerStatus").textContent="Press play to begin your qualifying stream.";
+
+box.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+try{
+
+await audio.play();
+
+}catch(error){
+
+$("playerStatus").textContent=
+"Press the play button to start listening.";
+
+console.warn(error);
+
+}
+
+}
+
+
+/* AUDIO PLAY EVENT */
+
+$("audio").addEventListener("play",()=>{
+
+if(!currentSong)return;
+
+started=true;
+
+$("playerStatus").textContent=
+"Listening... Keep playing for 60 seconds.";
+
+if(!timer){
+
+timer=setInterval(()=>{
+
+const audio=$("audio");
+
+if(!started || audio.paused || audio.ended || done){
+
+return;
+
+}
+
+seconds++;
+
+if(seconds>=60){
+
+done=true;
+
+clearInterval(timer);
+
+timer=null;
+
+recordStream();
+
+}
+
+},1000);
+
+}
+
+});
+
+
+/* PAUSE EVENT */
+
+$("audio").addEventListener("pause",()=>{
+
+started=false;
+
+if(!done){
+
+$("playerStatus").textContent=
+"Listening paused. Resume to continue your qualifying stream.";
+
+}
+
+});
+
+
+/* AUDIO ENDED */
+
+$("audio").addEventListener("ended",()=>{
+
+started=false;
+
+if(!done){
+
+$("playerStatus").textContent=
+"Song ended before 60 seconds. Listen again to qualify.";
+
+}
+
+});
+
+
+/* RECORD QUALIFYING STREAM */
+
+async function recordStream(){
+
+try{
+
+await authPromise;
+
+if(!auth.currentUser){
+
+throw new Error("Authentication unavailable.");
+
+}
+
+const uid=auth.currentUser.uid;
+
+const songId=currentSong;
+
+if(!songId)return;
+
+const r=ref(
+db,
+"votes/"+songId+"/"+month+"/"+uid
+);
+
+const old=await get(r);
+
+if(old.exists()){
+
+$("playerStatus").textContent=
+"You have already earned a qualifying stream for this song this month.";
+
+return;
+
+}
+
+await set(r,{
+qualifiedAt:Date.now()
+});
+
+$("playerStatus").textContent=
+"🏆 Thank you! Your qualifying stream has been recorded successfully.";
+
+}catch(error){
+
+done=false;
+
+$("playerStatus").textContent=
+"Could not record stream. Check database rules.";
+
+console.error(error);
+
+}
+
+}
+
+
+/* SONG CARD */
+
+function card(s){
+
+return`
+
+<article class="song">
+
+${s.photo?
+'<img alt="" src="'+esc(s.photo)+'">':
+'<div style="width:70px;height:70px;background:#162749;border-radius:10px;flex-shrink:0"></div>'
+}
+
+<div class="info">
+
+<h3>${esc(s.title||"Untitled song")}</h3>
+
+<p>
+${esc(s.artist||"Unknown artiste")}
+ · ${s.plays} qualifying streams
+</p>
+
+<button
+class="btn"
+type="button"
+data-song="${esc(s.id)}">
+▶ LISTEN & SUPPORT
+</button>
+
+</div>
+
+</article>
+
+`;
+
+}
+
+
+/* DISPLAY SONGS */
 
 function render(){
 
-const list=Object.entries(songs).map(([id,s])=>{
-let n=0;
-Object.values(votes[id]||{}).forEach(month=>n+=Object.keys(month||{}).length);
-return{id,...s,plays:n};
-}).filter(s=>s.active!==false).sort((a,b)=>b.plays-a.plays);
+const list=Object.entries(songs).map(([id,s])=>({
 
-$("status").textContent=settings.openDate&&settings.closeDate?
-(Date.now()<new Date(settings.openDate)?"Competition opens soon":
-Date.now()>new Date(settings.closeDate)?"Competition closed":
+id,
+...s,
+plays:getPlays(id)
+
+}))
+
+.filter(s=>s.active!==false)
+
+.sort((a,b)=>b.plays-a.plays);
+
+
+$("status").textContent=
+settings.openDate&&settings.closeDate?
+
+(Date.now()<new Date(settings.openDate).getTime()?
+"Competition opens soon":
+
+Date.now()>new Date(settings.closeDate).getTime()?
+"Competition closed":
+
 "Competition is open"):
+
 "Competition dates not set";
 
-$("dates").textContent="Opens: "+dt(settings.openDate)+" · Closes: "+dt(settings.closeDate);
+
+$("dates").textContent=
+"Opens: "+dt(settings.openDate)+
+" · Closes: "+dt(settings.closeDate);
+
 
 $("winnerBox").innerHTML=winner.name?
-((winner.photo?'<img alt="" src="'+esc(winner.photo)+'">':"")+
+
+((winner.photo?
+'<img alt="" src="'+esc(winner.photo)+'">':
+"")+
+
 '<strong>'+esc(winner.name)+'</strong>'+
+
 '<p>'+esc(winner.songTitle||"")+'</p>'):
+
 "Winner will be announced here.";
 
-const card=s=>
-'<article class="song">'+
-(s.photo?'<img alt="" src="'+esc(s.photo)+'">':
-'<div style="width:70px;height:70px;background:#162749;border-radius:10px"></div>')+
-'<div class="info">'+
-'<h3>'+esc(s.title||"Untitled song")+'</h3>'+
-'<p>'+esc(s.artist||"Unknown artiste")+' · '+s.plays+' qualifying streams</p>'+
-'<a class="btn" href="player.html?song='+encodeURIComponent(s.id)+'" target="_blank" rel="noopener">Listen & Support</a>'+
-'</div></article>';
 
 $("topSongs").innerHTML=list.length?
-list.slice(0,3).map(card).join(""):'<div class="empty">No songs have been added yet.</div>';
+
+list.slice(0,3).map(card).join(""):
+
+'<div class="empty">No songs have been added yet.</div>';
+
 
 $("allSongs").innerHTML=list.length?
-list.map(card).join(""):'<div class="empty">Songs will appear here soon.</div>';
+
+list.map(card).join(""):
+
+'<div class="empty">Songs will appear here soon.</div>';
 
 }
 
-onValue(ref(db,"songs"),s=>{
-songs=s.val()||{};
-render();
-},e=>{
-$("allSongs").innerHTML='<div class="empty">Could not load songs. Check Firebase rules.</div>';
-console.error(e);
+
+/* LISTEN BUTTONS */
+
+document.addEventListener("click",event=>{
+
+const button=event.target.closest("[data-song]");
+
+if(!button)return;
+
+playSong(button.dataset.song);
+
 });
 
-onValue(ref(db,"votes"),s=>{
-votes=s.val()||{};
+
+/* FIREBASE DATABASE LISTENERS */
+
+onValue(ref(db,"songs"),snapshot=>{
+
+songs=snapshot.val()||{};
+
 render();
+
+},error=>{
+
+$("allSongs").innerHTML=
+'<div class="empty">Could not load songs. Check Firebase rules.</div>';
+
+console.error(error);
+
 });
 
-onValue(ref(db,"settings"),s=>{
-settings=s.val()||{};
+
+onValue(ref(db,"votes"),snapshot=>{
+
+votes=snapshot.val()||{};
+
 render();
+
 });
 
-onValue(ref(db,"winner"),s=>{
-winner=s.val()||{};
+
+onValue(ref(db,"settings"),snapshot=>{
+
+settings=snapshot.val()||{};
+
 render();
+
+});
+
+
+onValue(ref(db,"winner"),snapshot=>{
+
+winner=snapshot.val()||{};
+
+render();
+
 });
 
 </script></body>
