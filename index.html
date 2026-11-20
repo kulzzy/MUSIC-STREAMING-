@@ -203,7 +203,7 @@ color:var(--m);
 padding:28px 10px;
 font-size:13px
 }
-</style></head><body><!-- BACK BUTTON: PART OF THE SCROLLING PAGE --><div class="back-area">
+</style></head><body><!-- BACK BUTTON --><div class="back-area">
 <button class="back-button" onclick="goBackToVoters()">
 ← BACK
 </button>
@@ -228,8 +228,11 @@ KULZZY RADIO · Celebrating Lives Everyday
 function goBackToVoters(){
 
   window.parent.postMessage(
-    {type:"KULZZY_APP_BACK"},
-    "https://kulzzy.github.io"
+    {
+      type:"KULZZY_APP_BACK",
+      source:"KULZZY_MUSIC_STREAMING_PAGE"
+    },
+    "https://krn-navigation-bar.pages.dev"
   );
 
 }
@@ -239,7 +242,7 @@ import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/f
 import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const cfg={
-apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkLUXfb9pv9E",
+apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkUXfb9pv9E",
 authDomain:"music-streaming-e724e.firebaseapp.com",
 databaseURL:"https://music-streaming-e724e-default-rtdb.europe-west1.firebasedatabase.app",
 projectId:"music-streaming-e724e",
