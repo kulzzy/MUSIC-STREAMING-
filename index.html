@@ -7,13 +7,7 @@
 <title>Best Streaming Song of the Month | Kulzzy Radio</title>
 
 <style>
-:root{
---n:#06122a;
---p:#0c1c3b;
---g:#ffd700;
---m:#b8c2d8
-}
-
+:root{--n:#06122a;--p:#0c1c3b;--g:#ffd700;--m:#b8c2d8}
 *{box-sizing:border-box}
 
 body{
@@ -22,8 +16,6 @@ background:var(--n);
 color:#fff;
 font-family:Arial,sans-serif
 }
-
-/* CLOSE BUTTON */
 
 .close-area{
 width:100%;
@@ -50,11 +42,10 @@ font-weight:900;
 line-height:1;
 cursor:pointer;
 box-shadow:0 0 12px rgba(255,215,0,.35);
-transition:transform .15s;
 }
 
 .close-button:active{
-transform:scale(.90)
+transform:scale(.92)
 }
 
 header{
@@ -70,16 +61,9 @@ font-size:clamp(22px,5vw,34px);
 margin:0 0 8px
 }
 
-header p{
-margin:0;
-color:#e8edf7
-}
+header p{margin:0;color:#e8edf7}
 
-.wrap{
-max-width:1000px;
-margin:auto;
-padding:16px
-}
+.wrap{max-width:1000px;margin:auto;padding:16px}
 
 .winner{
 background:linear-gradient(120deg,#332b00,#122447);
@@ -90,14 +74,8 @@ text-align:center;
 margin-bottom:18px
 }
 
-.winner h2,
-.section-title{
-color:var(--g)
-}
-
-.winner h2{
-margin:0 0 10px
-}
+.winner h2,.section-title{color:var(--g)}
+.winner h2{margin:0 0 10px}
 
 .winner img{
 width:92px;
@@ -113,12 +91,7 @@ font-size:20px;
 margin-top:8px
 }
 
-.meta{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin:12px 0
-}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
 
 .pill{
 background:#14284b;
@@ -153,10 +126,7 @@ object-fit:cover;
 background:#162749
 }
 
-.info{
-min-width:0;
-flex:1
-}
+.info{min-width:0;flex:1}
 
 .song h3{
 font-size:16px;
@@ -201,16 +171,12 @@ font-size:13px
 
 <body>
 
-<!-- X CLOSE BUTTON -->
-
 <div class="close-area">
 <button
 class="close-button"
 type="button"
 aria-label="Close music streaming page"
-onclick="closeMusicPage()">
-×
-</button>
+onclick="closeMusicPage()">×</button>
 </div>
 
 <header>
@@ -251,242 +217,152 @@ KULZZY RADIO · Celebrating Lives Everyday
 <script>
 
 /*
-CLOSE MUSIC STREAMING PAGE
+CLOSE MUSIC PAGE
 
-When opened inside Kulzzy Radio Navigation,
-send KULZZY_APP_BACK to the parent navigation.
-
-The existing navigation message listener handles
-this message and returns to the VOTERS competition list.
-
-No browser-history navigation is used inside the iframe.
+Directly activates the existing navigation BACK button.
+No browser history and no new navigation system.
 */
 
 function closeMusicPage(){
 
-    if(window.parent && window.parent !== window){
+    try{
 
-        window.parent.postMessage({
-            type:"KULZZY_APP_BACK"
-        },"*");
+        if(window.parent && window.parent !== window){
 
-        return;
+            const parentDocument = window.parent.document;
+
+            const backButton =
+                parentDocument.querySelector(
+                    "#kulzzyVotersDetail .kulzzyVoterBack"
+                ) ||
+                parentDocument.querySelector(
+                    ".kulzzyVoterBack"
+                );
+
+            if(backButton){
+                backButton.click();
+                return;
+            }
+
+            if(
+                typeof window.parent.goBackInKulzzyNavigation ===
+                "function"
+            ){
+                window.parent.goBackInKulzzyNavigation();
+                return;
+            }
+
+            console.error("Kulzzy VOTERS back button was not found.");
+
+            return;
+        }
+
+    }catch(error){
+
+        console.error("Could not access Kulzzy navigation:",error);
+
     }
 
-    if(window.history.length > 1){
-        window.history.back();
-    }
 }
 
 </script>
 
 <script type="module">
 
-import{
-initializeApp
-}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import{
-getDatabase,
-ref,
-onValue
-}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-import{
-getAuth,
-signInAnonymously
-}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const cfg={
-
 apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkUXfb9pv9E",
-
 authDomain:"music-streaming-e724e.firebaseapp.com",
-
 databaseURL:"https://music-streaming-e724e-default-rtdb.europe-west1.firebasedatabase.app",
-
 projectId:"music-streaming-e724e",
-
 storageBucket:"music-streaming-e724e.firebasestorage.app",
-
 messagingSenderId:"543568067808",
-
 appId:"1:543568067808:web:495540085bf8b3e080a485",
-
 measurementId:"G-7KMXGYVCF9"
-
 };
 
+const app=initializeApp(cfg),
+db=getDatabase(app),
+auth=getAuth(app),
+$=x=>document.getElementById(x),
+esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-const app=initializeApp(cfg);
-
-const db=getDatabase(app);
-
-const auth=getAuth(app);
-
-const $=x=>document.getElementById(x);
-
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[c]));
-
-
-let songs={},
-votes={},
-settings={},
-winner={};
-
+let songs={},votes={},settings={},winner={};
 
 signInAnonymously(auth).catch(console.warn);
 
-
 function dt(v){
-
 if(!v)return"TBA";
-
 const d=new Date(v);
-
 return isNaN(d)?"TBA":d.toLocaleDateString();
-
 }
-
 
 function render(){
 
 const list=Object.entries(songs).map(([id,s])=>{
-
 let n=0;
-
-Object.values(votes[id]||{}).forEach(month=>{
-n+=Object.keys(month||{}).length;
-});
-
-return{
-id,
-...s,
-plays:n
-};
-
-}).filter(s=>s.active!==false)
-.sort((a,b)=>b.plays-a.plays);
-
+Object.values(votes[id]||{}).forEach(month=>n+=Object.keys(month||{}).length);
+return{id,...s,plays:n};
+}).filter(s=>s.active!==false).sort((a,b)=>b.plays-a.plays);
 
 $("status").textContent=settings.openDate&&settings.closeDate?
-
-(Date.now()<new Date(settings.openDate)
-?"Competition opens soon":
-
-Date.now()>new Date(settings.closeDate)
-?"Competition closed":
-
+(Date.now()<new Date(settings.openDate)?"Competition opens soon":
+Date.now()>new Date(settings.closeDate)?"Competition closed":
 "Competition is open"):
-
 "Competition dates not set";
 
-
-$("dates").textContent=
-"Opens: "+dt(settings.openDate)+
-" · Closes: "+dt(settings.closeDate);
-
+$("dates").textContent="Opens: "+dt(settings.openDate)+" · Closes: "+dt(settings.closeDate);
 
 $("winnerBox").innerHTML=winner.name?
-
-((winner.photo?
-'<img alt="" src="'+esc(winner.photo)+'">':
-"")+
-
+((winner.photo?'<img alt="" src="'+esc(winner.photo)+'">':"")+
 '<strong>'+esc(winner.name)+'</strong>'+
-
 '<p>'+esc(winner.songTitle||"")+'</p>'):
-
 "Winner will be announced here.";
 
-
 const card=s=>
-
 '<article class="song">'+
-
-(s.photo?
-'<img alt="" src="'+esc(s.photo)+'">':
+(s.photo?'<img alt="" src="'+esc(s.photo)+'">':
 '<div style="width:70px;height:70px;background:#162749;border-radius:10px"></div>')+
-
 '<div class="info">'+
-
 '<h3>'+esc(s.title||"Untitled song")+'</h3>'+
-
-'<p>'+
-esc(s.artist||"Unknown artiste")+
-' · '+s.plays+
-' qualifying streams</p>'+
-
-'<a class="btn" href="player.html?song='+
-encodeURIComponent(s.id)+
-'" target="_blank" rel="noopener">Listen & Support</a>'+
-
+'<p>'+esc(s.artist||"Unknown artiste")+' · '+s.plays+' qualifying streams</p>'+
+'<a class="btn" href="player.html?song='+encodeURIComponent(s.id)+'" target="_blank" rel="noopener">Listen & Support</a>'+
 '</div></article>';
 
-
 $("topSongs").innerHTML=list.length?
-
 list.slice(0,3).map(card).join(""):
-
 '<div class="empty">No songs have been added yet.</div>';
 
-
 $("allSongs").innerHTML=list.length?
-
 list.map(card).join(""):
-
 '<div class="empty">Songs will appear here soon.</div>';
 
 }
 
-
 onValue(ref(db,"songs"),s=>{
-
 songs=s.val()||{};
-
 render();
-
 },e=>{
-
-$("allSongs").innerHTML=
-'<div class="empty">Could not load songs. Check Firebase rules.</div>';
-
+$("allSongs").innerHTML='<div class="empty">Could not load songs. Check Firebase rules.</div>';
 console.error(e);
-
 });
-
 
 onValue(ref(db,"votes"),s=>{
-
 votes=s.val()||{};
-
 render();
-
 });
-
 
 onValue(ref(db,"settings"),s=>{
-
 settings=s.val()||{};
-
 render();
-
 });
 
-
 onValue(ref(db,"winner"),s=>{
-
 winner=s.val()||{};
-
 render();
-
 });
 
 </script>
