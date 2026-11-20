@@ -178,24 +178,20 @@ KULZZY RADIO · Celebrating Lives Everyday
 <script>
 /*
 BACK BUTTON:
-Send the BACK request to the parent navigation page.
-The navigation page should handle this message by
-opening the VOTERS list directly.
+Requests the navigation page to activate its existing
+BACK TO VOTING COMPETITIONS button.
+
+This avoids browser history taking the listener back
+to the previously played song page.
 */
 
 function goBackToVoters(){
 
-    const message={
-        type:"KULZZY_APP_BACK",
-        source:"KULZZY_MUSIC_STREAMING_PAGE"
-    };
+    if(window.parent && window.parent !== window){
 
-    if(window.parent!==window){
-
-        window.parent.postMessage(
-            message,
-            "*"
-        );
+        window.parent.postMessage({
+            type:"KULZZY_RETURN_TO_VOTING_COMPETITIONS"
+        },"*");
 
         return;
     }
