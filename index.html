@@ -128,6 +128,48 @@ const auth=getAuth(app);
 const $=id=>document.getElementById(id);
 const month=new Date().toISOString().slice(0,7).replace("-","");
 
+/* RADIO COMMUNICATION */
+
+const RADIO_CONTROL_KEY="kulzzyCompetitionAudioControl";
+
+let switchingSong=false;
+let switchingTimer=null;
+
+function sendRadioControl(action){
+
+try{
+
+localStorage.setItem(
+RADIO_CONTROL_KEY,
+JSON.stringify({
+action:action,
+timestamp:Date.now(),
+nonce:Math.random().toString(36).slice(2)
+})
+);
+
+}catch(error){
+
+console.warn("Radio communication unavailable:",error);
+
+}
+
+}
+
+function suppressSongSwitchPause(){
+
+switchingSong=true;
+
+if(switchingTimer){
+clearTimeout(switchingTimer);
+}
+
+switchingTimer=setTimeout(()=>{
+switchingSong=false;
+},500);
+
+}
+
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({
 "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 }[c]));
@@ -218,8 +260,6 @@ const link=createSongLink(id);
 const title=song.title||"Untitled song";
 const artist=song.artist||"Unknown artiste";
 
-/* THE CLICKABLE LINK IS PART OF THE MESSAGE */
-
 const message=
 "🎵 Listen to "+title+
 " by "+artist+
@@ -227,8 +267,6 @@ const message=
 "Your music. Your moment. Your stage.\n\n"+
 "LISTEN HERE:\n"+
 link;
-
-/* ANDROID AND OTHER DEVICE SHARE MENU */
 
 if(navigator.share){
 
@@ -250,8 +288,6 @@ console.warn("Sharing unavailable:",error);
 }
 
 }
-
-/* COPY THE COMPLETE MESSAGE INCLUDING THE LINK */
 
 try{
 
@@ -302,9 +338,13 @@ prompt("Copy this complete message and share it:",message);
 
 }
 
+/* STOP CURRENT SONG WITHOUT RESUMING RADIO DURING SONG SWITCH */
+
 function stopPlayer(){
 
 const audio=$("audio");
+
+suppressSongSwitchPause();
 
 if(timer){
 clearInterval(timer);
@@ -321,6 +361,8 @@ done=false;
 currentSong=null;
 
 }
+
+/* PLAY SONG */
 
 async function playSong(id){
 
@@ -349,13 +391,19 @@ const audio=$("audio");
 const url=songURL(song.url);
 
 if(!url){
+
 $("playerStatus").textContent="This song has no playable audio link.";
+sendRadioControl("resume");
 return;
+
 }
 
 if(!competitionOpen()){
+
 $("playerStatus").textContent="The competition is not currently open.";
+sendRadioControl("resume");
 return;
+
 }
 
 audio.src=url;
@@ -375,17 +423,29 @@ await audio.play();
 }catch(error){
 
 $("playerStatus").textContent="Press the play button to start listening.";
+sendRadioControl("resume");
 console.warn(error);
 
 }
 
 }
 
-/* AUDIO QUALIFYING TIMER */
+/* AUDIO PLAY EVENT */
 
 $("audio").addEventListener("play",()=>{
 
+switchingSong=false;
+
+if(switchingTimer){
+clearTimeout(switchingTimer);
+switchingTimer=null;
+}
+
 if(!currentSong)return;
+
+/* PAUSE RADIO WHEN COMPETITION SONG STARTS */
+
+sendRadioControl("pause");
 
 started=true;
 
@@ -418,22 +478,61 @@ recordStream();
 
 });
 
+/* AUDIO PAUSE EVENT */
+
 $("audio").addEventListener("pause",()=>{
 
 started=false;
 
-if(!done){
+/* DO NOT RESUME RADIO WHEN SWITCHING BETWEEN SONGS */
+
+if(!switchingSong){
+
+sendRadioControl("resume");
+
+}
+
+if(!done&&currentSong){
+
 $("playerStatus").textContent="Listening paused. Resume to continue your qualifying stream.";
+
 }
 
 });
+
+/* AUDIO ENDED EVENT */
 
 $("audio").addEventListener("ended",()=>{
 
 started=false;
 
+if(timer){
+clearInterval(timer);
+timer=null;
+}
+
+/* RESUME RADIO WHEN COMPETITION SONG ENDS */
+
+sendRadioControl("resume");
+
 if(!done){
+
 $("playerStatus").textContent="Song ended before 60 seconds. Listen again to qualify.";
+
+}
+
+});
+
+/* AUDIO ERROR EVENT */
+
+$("audio").addEventListener("error",()=>{
+
+if(currentSong){
+
+sendRadioControl("resume");
+
+$("playerStatus").textContent="This song could not be played. Please try another song.";
+
 }
 
 });
