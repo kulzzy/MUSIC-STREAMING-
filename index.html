@@ -38,6 +38,7 @@ header p{margin:0;color:#e8edf7}
 .song p{font-size:13px;color:var(--m);margin:0 0 10px}
 
 .btn{display:inline-block;background:var(--g);color:#06122a;font-weight:bold;border:0;border-radius:9px;padding:10px 13px;cursor:pointer}
+.share-btn{display:inline-block;background:#142f55;color:#fff;font-weight:bold;border:1px solid var(--g);border-radius:9px;padding:10px 13px;cursor:pointer;margin-top:7px}
 .empty{padding:22px;text-align:center;color:var(--m);background:var(--p);border-radius:12px}
 
 .player{display:none;background:linear-gradient(140deg,#122b50,#0c1c3b);border:2px solid var(--g);border-radius:16px;padding:18px;margin:18px 0;text-align:center}
@@ -140,6 +141,7 @@ let seconds=0;
 let timer=null;
 let done=false;
 let started=false;
+let deepLinkHandled=false;
 
 const authPromise=signInAnonymously(auth);
 
@@ -170,7 +172,119 @@ n+=Object.keys(monthData||{}).length;
 return n;
 }
 
+/* CREATE READABLE SONG NAME FOR SHARING */
+
+function slugify(text){
+return String(text||"song")
+.toLowerCase()
+.trim()
+.replace(/[^a-z0-9]+/g,"-")
+.replace(/^-+|-+$/g,"")||"song";
+}
+
+/* GENERATE A UNIQUE LINK FOR EACH SONG */
+
+function createSongLink(id){
+
+const song=songs[id];
+
+if(!song)return window.location.href;
+
+const title=slugify(
+(song.title||"song")+" "+(song.artist||"")
+);
+
+const url=new URL(window.location.href);
+
+url.search="";
+url.hash="";
+
+url.searchParams.set("song",id);
+url.searchParams.set("title",title);
+
+return url.toString();
+}
+
+/* SHARE SONG */
+
+async function shareSong(id,button){
+
+const song=songs[id];
+
+if(!song)return;
+
+const link=createSongLink(id);
+
+const title=song.title||"Untitled song";
+const artist=song.artist||"Unknown artiste";
+
+const message=
+"🎵 Listen to "+title+
+" by "+artist+
+" on Kulzzy Radio!\n\n"+
+"Your music. Your moment. Your stage.\n\n"+
+link;
+
+if(navigator.share){
+
+try{
+
+await navigator.share({
+title:title+" | Kulzzy Radio",
+text:
+"Listen to "+title+" by "+artist+" on Kulzzy Radio.",
+url:link
+});
+
+return;
+
+}catch(error){
+
+if(error.name==="AbortError")return;
+
+}
+
+}
+
+try{
+
+if(navigator.clipboard&&navigator.clipboard.writeText){
+
+await navigator.clipboard.writeText(message);
+
+}else{
+
+const input=document.createElement("textarea");
+input.value=message;
+input.style.position="fixed";
+input.style.opacity="0";
+
+document.body.appendChild(input);
+input.select();
+document.execCommand("copy");
+input.remove();
+
+}
+
+const oldText=button.textContent;
+
+button.textContent="✓ LINK COPIED";
+
+setTimeout(()=>{
+button.textContent=oldText;
+},2500);
+
+}catch(error){
+
+console.error(error);
+prompt("Copy this song link:",link);
+
+}
+
+}
+
 function stopPlayer(){
+
 const audio=$("audio");
 
 if(timer){
@@ -186,6 +300,7 @@ started=false;
 seconds=0;
 done=false;
 currentSong=null;
+
 }
 
 async function playSong(id){
@@ -235,13 +350,19 @@ block:"start"
 });
 
 try{
+
 await audio.play();
+
 }catch(error){
+
 $("playerStatus").textContent="Press the play button to start listening.";
 console.warn(error);
+
 }
 
 }
+
+/* AUDIO QUALIFYING TIMER */
 
 $("audio").addEventListener("play",()=>{
 
@@ -298,6 +419,8 @@ $("playerStatus").textContent="Song ended before 60 seconds. Listen again to qua
 
 });
 
+/* RECORD QUALIFYING STREAM */
+
 async function recordStream(){
 
 try{
@@ -317,13 +440,11 @@ const r=ref(db,"votes/"+songId+"/"+month+"/"+uid);
 
 const old=await get(r);
 
-/* ALREADY QUALIFIED:
-   NO POPUP, NO ERROR, NO SECOND COUNT.
-   THE SONG REMAINS AVAILABLE FOR REPLAY. */
-
 if(old.exists()){
+
 $("playerStatus").textContent="";
 return;
+
 }
 
 await set(r,{
@@ -344,25 +465,41 @@ console.error(error);
 
 }
 
+/* SONG CARD WITH LISTEN AND SHARE BUTTONS */
+
 function card(s){
 
 return`
 <article class="song">
+
 ${s.photo?
 '<img alt="" src="'+esc(s.photo)+'">':
 '<div style="width:70px;height:70px;background:#162749;border-radius:10px;flex-shrink:0"></div>'
 }
+
 <div class="info">
+
 <h3>${esc(s.title||"Untitled song")}</h3>
+
 <p>${esc(s.artist||"Unknown artiste")} · ${s.plays} qualifying streams</p>
+
 <button class="btn" type="button" data-song="${esc(s.id)}">
 ▶ LISTEN & SUPPORT
 </button>
+
+<br>
+
+<button class="share-btn" type="button" data-share-song="${esc(s.id)}">
+↗ SHARE SONG
+</button>
+
 </div>
 </article>
 `;
 
 }
+
+/* DISPLAY SONGS AND RANKINGS */
 
 function render(){
 
@@ -398,33 +535,85 @@ list.map(card).join(""):
 
 }
 
+/* HANDLE LISTEN AND SHARE BUTTONS */
+
 document.addEventListener("click",event=>{
-const button=event.target.closest("[data-song]");
-if(!button)return;
-playSong(button.dataset.song);
+
+const listenButton=event.target.closest("[data-song]");
+
+if(listenButton){
+playSong(listenButton.dataset.song);
+return;
+}
+
+const shareButton=event.target.closest("[data-share-song]");
+
+if(shareButton){
+shareSong(shareButton.dataset.shareSong,shareButton);
+return;
+}
+
 });
 
+/* OPEN THE SONG FROM A SHARED LINK */
+
+function openSharedSong(){
+
+if(deepLinkHandled)return;
+
+const params=new URLSearchParams(window.location.search);
+const songId=params.get("song");
+
+if(!songId)return;
+
+if(!songs[songId])return;
+
+deepLinkHandled=true;
+
+playSong(songId);
+
+}
+
+/* FIREBASE LISTENERS */
+
 onValue(ref(db,"songs"),snapshot=>{
+
 songs=snapshot.val()||{};
+
 render();
+
+openSharedSong();
+
 },error=>{
+
 $("allSongs").innerHTML='<div class="empty">Could not load songs. Check Firebase rules.</div>';
+
 console.error(error);
+
 });
 
 onValue(ref(db,"votes"),snapshot=>{
+
 votes=snapshot.val()||{};
+
 render();
+
 });
 
 onValue(ref(db,"settings"),snapshot=>{
+
 settings=snapshot.val()||{};
+
 render();
+
 });
 
 onValue(ref(db,"winner"),snapshot=>{
+
 winner=snapshot.val()||{};
+
 render();
+
 });
 
 </script>
