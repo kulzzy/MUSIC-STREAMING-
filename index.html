@@ -1,9 +1,12 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06122a">
-<title>Best Streaming Song of the Month | Kulzzy Radio</title><style>
+<title>Best Streaming Song of the Month | Kulzzy Radio</title>
+
+<style>
 :root{
 --n:#06122a;
 --p:#0c1c3b;
@@ -12,27 +15,31 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--n);color:#fff;font-family:Arial,sans-serif}
-.close-area{width:100%;min-height:54px;padding:8px 10px;display:flex;align-items:center;background:linear-gradient(140deg,#0b2046,#06122a)}
-.close-button{width:100%;max-width:260px;padding:11px 15px;border:1px solid var(--g);border-radius:9px;background:var(--g);color:#07152f;font-size:12px;font-weight:bold;cursor:pointer}
+
 header{text-align:center;padding:15px 14px 18px;background:linear-gradient(140deg,#0b2046,#06122a);border-bottom:1px solid #293b5d}
 header h1{color:var(--g);font-size:clamp(22px,5vw,34px);margin:0 0 8px}
 header p{margin:0;color:#e8edf7}
+
 .wrap{max-width:1000px;margin:auto;padding:16px}
 .winner{background:linear-gradient(120deg,#332b00,#122447);border:1px solid var(--g);border-radius:16px;padding:18px;text-align:center;margin-bottom:18px}
 .winner h2,.section-title{color:var(--g)}
 .winner h2{margin:0 0 10px}
 .winner img{width:92px;height:92px;border-radius:50%;object-fit:cover;border:2px solid var(--g)}
 .winner strong{display:block;font-size:20px;margin-top:8px}
+
 .meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
 .pill{background:#14284b;border:1px solid #2a426a;border-radius:999px;padding:8px 12px;font-size:13px}
+
 .songs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
 .song{background:var(--p);border:1px solid #23385e;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center;min-width:0}
 .song img{width:70px;height:70px;border-radius:10px;object-fit:cover;background:#162749}
 .info{min-width:0;flex:1}
 .song h3{font-size:16px;margin:0 0 5px;overflow-wrap:anywhere}
 .song p{font-size:13px;color:var(--m);margin:0 0 10px}
+
 .btn{display:inline-block;background:var(--g);color:#06122a;font-weight:bold;border:0;border-radius:9px;padding:10px 13px;cursor:pointer}
 .empty{padding:22px;text-align:center;color:var(--m);background:var(--p);border-radius:12px}
+
 .player{display:none;background:linear-gradient(140deg,#122b50,#0c1c3b);border:2px solid var(--g);border-radius:16px;padding:18px;margin:18px 0;text-align:center}
 .player.show{display:block}
 .player img{width:120px;height:120px;border-radius:14px;object-fit:cover;margin:10px auto}
@@ -40,50 +47,64 @@ header p{margin:0;color:#e8edf7}
 .player audio{width:100%;margin:15px 0}
 .player-status{background:#10284b;padding:12px;border-radius:10px;font-size:13px;color:#fff;margin-top:10px;min-height:0}
 .player-note{color:var(--m);font-size:12px;line-height:1.5}
+
 .foot{text-align:center;color:var(--m);padding:28px 10px;font-size:13px}
-</style></head><body><div class="close-area">
-<button class="close-button" type="button" onclick="closeMusicPage()">
-← BACK TO VOTING COMPETITIONS
-</button>
-</div><header>
+</style>
+</head>
+
+<body>
+
+<header>
 <h1>BEST STREAMING SONG OF THE MONTH</h1>
 <p>Your music. Your moment. Your stage.</p>
-</header><main class="wrap"><section class="winner">
+</header>
+
+<main class="wrap">
+
+<section class="winner">
 <h2>🏆 OFFICIAL WINNER</h2>
 <div id="winnerBox">Winner will be announced here.</div>
-</section><div class="meta">
+</section>
+
+<div class="meta">
 <span class="pill" id="status">Loading competition…</span>
 <span class="pill" id="dates">Opening and closing dates not set</span>
-</div><section class="player" id="playerBox">
+</div>
+
+<section class="player" id="playerBox">
 <h2>🎵 NOW PLAYING</h2>
 <img id="playerPhoto" alt="Song artwork" hidden>
 <h3 id="playerTitle">Select a song</h3>
 <p id="playerArtist"></p>
 <audio id="audio" controls preload="none" playsinline></audio>
+
 <div class="player-status" id="playerStatus">
 Select a song below to start listening.
 </div>
+
 <p class="player-note">
 Keep listening for at least 60 seconds to earn one qualifying stream.
 One qualifying stream per account, per song, per month.
 </p>
-</section><h2 class="section-title">🔥 CURRENT TOP 3</h2>
+</section>
+
+<h2 class="section-title">🔥 CURRENT TOP 3</h2>
 <div class="songs" id="topSongs">
 <div class="empty">Loading rankings…</div>
-</div><h2 class="section-title">🎵 ALL SONGS</h2>
+</div>
+
+<h2 class="section-title">🎵 ALL SONGS</h2>
 <div class="songs" id="allSongs">
 <div class="empty">Loading songs…</div>
-</div><div class="foot">
+</div>
+
+<div class="foot">
 KULZZY RADIO · Celebrating Lives Everyday
-</div></main><script>
-function closeMusicPage(){
-if(window.parent && window.parent !== window){
-window.parent.postMessage({type:"KULZZY_APP_BACK"},"*");
-}else{
-window.history.back();
-}
-}
-</script><script type="module">
+</div>
+
+</main>
+
+<script type="module">
 
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getDatabase,ref,get,set,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -151,13 +172,16 @@ return n;
 
 function stopPlayer(){
 const audio=$("audio");
+
 if(timer){
 clearInterval(timer);
 timer=null;
 }
+
 audio.pause();
 audio.removeAttribute("src");
 audio.load();
+
 started=false;
 seconds=0;
 done=false;
@@ -403,5 +427,6 @@ winner=snapshot.val()||{};
 render();
 });
 
-</script></body>
+</script>
+</body>
 </html>
