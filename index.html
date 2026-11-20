@@ -1,766 +1,307 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07152f">
-<title>Kulzzy Radio Navigation</title><style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06122a">
+<title>Best Streaming Song of the Month | Kulzzy Radio</title>
+
+<style>
+:root{--n:#06122a;--p:#0c1c3b;--g:#ffd700;--m:#b8c2d8}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;width:100%;min-width:0;height:100%;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:transparent;touch-action:auto;pointer-events:auto}
-body{overflow:hidden;-webkit-overflow-scrolling:touch}
-#kulzzyNav{position:fixed;top:0;left:50%;transform:translateX(-50%);width:calc(100% - 16px);max-width:520px;height:40px;background:rgba(7,21,47,.98);border:1px solid rgba(255,215,0,.45);border-radius:11px;display:flex;align-items:center;justify-content:space-around;padding:2px;z-index:2147483647;box-shadow:0 2px 8px rgba(0,0,0,.2);pointer-events:auto;touch-action:manipulation}
-.kulzzyNavBtn{flex:1;width:100%;height:34px;border:0;background:transparent;color:white;font-size:11px;font-weight:bold;border-radius:8px;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;pointer-events:auto;touch-action:manipulation;padding:0 2px}
-.kulzzyNavBtn:hover{background:rgba(255,215,0,.15);color:#ffd700}
-.kulzzyNavBtn:active{background:rgba(255,215,0,.25)}
-.kulzzyNavBtn.active{background:#ffd700;color:#07152f}
-#kulzzyContent{position:relative;z-index:1;width:100%!important;max-width:none!important;min-width:0;margin:0!important;padding:48px 0 30px!important;height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;overflow-x:hidden!important;touch-action:auto!important;overscroll-behavior-y:contain!important;overscroll-behavior-x:none!important;pointer-events:auto!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
-#kulzzyContent::-webkit-scrollbar{display:none}
-.kulzzySection{display:none;width:100%!important;max-width:none!important;min-width:0;margin:0!important;padding:0!important;position:relative;left:0;right:0;overflow:visible!important;touch-action:auto!important;pointer-events:auto!important}
-.kulzzySection.active{display:block}
-.kulzzyPublishedContent{display:block;width:100%!important;max-width:none!important;min-width:0;margin:0!important;padding:0!important;overflow:visible!important;touch-action:auto!important;pointer-events:auto!important;-webkit-overflow-scrolling:touch}
-.kulzzyPublishedContent>div{width:100%;max-width:none;margin:0;padding:0;pointer-events:auto!important;touch-action:auto!important}
-.kulzzyPublishedContent button,.kulzzyPublishedContent a,.kulzzyPublishedContent input,.kulzzyPublishedContent textarea,.kulzzyPublishedContent select,.kulzzyPublishedContent label,.kulzzyPublishedContent video,.kulzzyPublishedContent audio,.kulzzyPublishedContent canvas,.kulzzyPublishedContent iframe,.kulzzyPublishedContent [role="button"],.kulzzyPublishedContent [onclick]{pointer-events:auto!important;touch-action:auto!important}
-.kulzzyPublishedContent img{max-width:100%;height:auto}
-.kulzzyPublishedContent iframe{display:block;width:100%!important;max-width:100%!important;border:0}
-.kulzzyPublishedContent table{max-width:100%}
-#kulzzyMorePagesMenu{width:100%;max-width:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;pointer-events:auto!important;touch-action:auto!important}
-.kulzzyMorePageButton{width:100%;border:1px solid rgba(255,215,0,.35);border-radius:10px;padding:12px;background:#07152f;color:white;text-align:left;font-size:14px;font-weight:bold;cursor:pointer;display:flex;align-items:center;gap:10px;-webkit-tap-highlight-color:transparent;pointer-events:auto!important;touch-action:manipulation}
-.kulzzyMorePageButton:hover{background:rgba(255,215,0,.12);color:#ffd700}
-.kulzzyMorePageButton:active{background:rgba(255,215,0,.25)}
-.kulzzyMorePageButton.active{background:#ffd700;color:#07152f}
-.kulzzyMorePageIcon{width:34px;height:34px;min-width:34px;display:flex;align-items:center;justify-content:center;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.35);border-radius:9px;font-size:20px;line-height:1;pointer-events:none}
-.kulzzyMorePageTitle{flex:1;min-width:0;line-height:1.3;pointer-events:none}
-#kulzzyMorePageContent{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;margin:0!important;padding:52px 0 24px!important;background:#07152f;z-index:2147483000!important;display:none;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;overscroll-behavior-x:none!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;pointer-events:auto!important;touch-action:pan-y!important}
-#kulzzyMorePageContent::-webkit-scrollbar{display:none}
-#kulzzyMorePageContent.open{display:block!important}
-.kulzzyMorePageContentBox{position:relative;z-index:1;width:100%;max-width:none;margin:0;padding:0 0 25px;background:transparent;color:white;border:0;border-radius:0;overflow:visible!important;line-height:1.6;pointer-events:auto!important;touch-action:auto!important}
-.kulzzyMorePageClose{position:fixed!important;top:6px!important;right:8px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;border:1px solid rgba(255,215,0,.7)!important;border-radius:9px!important;background:#07152f!important;color:#ffd700!important;font-size:21px!important;font-weight:bold!important;line-height:1!important;cursor:pointer!important;z-index:2147483646!important;display:flex!important;align-items:center!important;justify-content:center!important;box-shadow:0 2px 8px rgba(0,0,0,.5)!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation!important;pointer-events:auto!important}
-.kulzzyMorePageClose:active{background:#ffd700!important;color:#07152f!important}
-.kulzzyMorePageContentBox *, .kulzzyHomePageContentBox *{box-sizing:border-box;max-width:100%}
-.kulzzyMorePageContentBox img,.kulzzyHomePageContentBox img{max-width:100%!important;height:auto!important}
-.kulzzyMorePageContentBox video,.kulzzyHomePageContentBox video{max-width:100%!important;height:auto!important;pointer-events:auto!important}
-.kulzzyMorePageContentBox iframe,.kulzzyHomePageContentBox iframe{display:block;width:100%!important;max-width:100%!important;border:0;pointer-events:auto!important;touch-action:auto!important}
-.kulzzyMorePageContentBox button,.kulzzyMorePageContentBox a,.kulzzyMorePageContentBox input,.kulzzyMorePageContentBox textarea,.kulzzyMorePageContentBox select,.kulzzyMorePageContentBox label,.kulzzyMorePageContentBox canvas,.kulzzyHomePageContentBox button,.kulzzyHomePageContentBox a,.kulzzyHomePageContentBox input,.kulzzyHomePageContentBox textarea,.kulzzyHomePageContentBox select,.kulzzyHomePageContentBox label,.kulzzyHomePageContentBox canvas{pointer-events:auto!important;touch-action:auto!important}
-.kulzzyMorePageContentBox table,.kulzzyHomePageContentBox table{width:100%;max-width:100%;overflow:auto;display:block}
-.kulzzyMorePageContentBox p,.kulzzyHomePageContentBox p{line-height:1.7}
-.kulzzyMorePageContentBox a,.kulzzyHomePageContentBox a{word-break:break-word}
-.kulzzyMorePageContentBox ul,.kulzzyMorePageContentBox ol,.kulzzyHomePageContentBox ul,.kulzzyHomePageContentBox ol{padding-left:25px}
-#kulzzyHomePageContent{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;min-height:100dvh!important;margin:0!important;padding:48px 0 25px!important;background:transparent!important;z-index:2147483000!important;display:none;overflow-y:auto;overflow-x:hidden;pointer-events:auto;touch-action:auto;overscroll-behavior-y:contain!important;overscroll-behavior-x:none!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-#kulzzyHomePageContent::-webkit-scrollbar{display:none}
-#kulzzyHomePageContent.open{display:block!important}
-#kulzzyNav{z-index:2147483647!important}
-.kulzzyHomePageContentBox{width:100%;max-width:none;margin:0;padding:0 0 25px;background:transparent!important;color:white;overflow:visible!important;line-height:1.6;pointer-events:auto!important;touch-action:auto!important}
-#kulzzyPullRefreshIndicator{position:fixed;top:48px;left:50%;transform:translate(-50%,-12px);z-index:2147483647;display:block;padding:9px 17px;min-width:155px;border:1px solid rgba(255,215,0,.75);border-radius:30px;background:#07152f;color:#ffd700;font-size:12px;font-weight:bold;text-align:center;white-space:nowrap;box-shadow:0 3px 12px rgba(0,0,0,.35);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease,transform .15s ease,visibility .15s ease}
-#kulzzyPullRefreshIndicator.visible{opacity:1;visibility:visible;transform:translate(-50%,0)}
-.kulzzyVoterBack{display:block;width:100%;max-width:260px;margin:0 0 15px;padding:11px 15px;border:1px solid #ffd700;border-radius:9px;background:#ffd700;color:#07152f;font-size:12px;font-weight:bold;cursor:pointer;text-align:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.kulzzyVoterBack:active{background:#e6bd00}
-.kulzzyPageStatus{margin:10px;padding:16px;border:1px solid rgba(255,215,0,.45);border-radius:10px;background:rgba(7,21,47,.94);color:#fff;text-align:center;line-height:1.5;overflow-wrap:anywhere}
-.kulzzyRetryButton{margin-top:12px;padding:10px 18px;border:0;border-radius:8px;background:#ffd700;color:#07152f;font-weight:bold;cursor:pointer;touch-action:manipulation}
-.kulzzyVotersGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:8px 10px 22px}
-.kulzzyVoterCard{display:block;width:100%;padding:0;overflow:hidden;border:1px solid rgba(255,215,0,.6);border-radius:12px;background:#07152f;color:white;text-align:left;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.18);touch-action:manipulation}
-.kulzzyVoterCard img{display:block;width:100%;height:160px;object-fit:cover;background:#10274c}
-.kulzzyVoterCardTitle{display:block;padding:10px;font-size:14px;font-weight:bold;line-height:1.35;color:#ffd700}
-.kulzzyVotersEmpty{grid-column:1/-1;text-align:center;padding:24px 14px;color:#ddd;background:rgba(7,21,47,.8);border:1px solid rgba(255,215,0,.2);border-radius:10px}
-.kulzzyVotersDetail{padding:12px 10px 22px}
-.kulzzyVoterDetailTitle{font-size:20px;color:#ffd700;font-weight:bold;margin:10px 0 14px}
-.kulzzyVoterDetailBody{width:100%;overflow:visible;background:transparent;color:white}
-.kulzzyVoterDetailBody iframe{display:block;width:100%;min-height:75vh;border:0;background:white;border-radius:8px}
-#kulzzyBackNotice{position:fixed;bottom:35px;left:50%;transform:translateX(-50%);z-index:2147483647;display:none;padding:12px 18px;border:1px solid #ffd700;border-radius:25px;background:#07152f;color:#ffd700;font-size:13px;font-weight:bold;white-space:nowrap;box-shadow:0 3px 12px rgba(0,0,0,.4);pointer-events:none}
-@media(max-width:360px){
-#kulzzyNav{width:calc(100% - 8px);height:38px}
-.kulzzyNavBtn{height:32px;font-size:9px}
-#kulzzyContent{padding-top:45px!important}
-#kulzzyHomePageContent{padding-top:45px!important}
-#kulzzyMorePageContent{padding-top:48px!important}
-#kulzzyPullRefreshIndicator{top:44px}
-.kulzzyMorePageClose{top:5px!important;right:5px!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important}
-.kulzzyVotersGrid{gap:7px;padding:7px}
-.kulzzyVoterCard img{height:130px}
-.kulzzyVoterCardTitle{font-size:12px;padding:8px}
+
+body{
+margin:0;
+background:var(--n);
+color:#fff;
+font-family:Arial,sans-serif
 }
-@media(min-width:361px) and (max-width:600px){.kulzzyNavBtn{font-size:10px}}
-</style></head><body><nav id="kulzzyNav">
-<button type="button" class="kulzzyNavBtn active" data-section="home">Home</button>
-<button type="button" class="kulzzyNavBtn" data-section="voters">🗳️ VOTERS</button>
-<button type="button" class="kulzzyNavBtn" data-section="wishes">Wishes</button>
-<button type="button" class="kulzzyNavBtn" data-section="market">Market</button>
-<button type="button" class="kulzzyNavBtn" data-section="more">More</button>
-</nav><div id="kulzzyContent">
-<section id="kulzzy-home" class="kulzzySection"><div id="kulzzyPublished-home" class="kulzzyPublishedContent"></div></section>
-<section id="kulzzy-request" class="kulzzySection"><div id="kulzzyPublished-request" class="kulzzyPublishedContent"></div></section>
-<section id="kulzzy-voters" class="kulzzySection">
-<div id="kulzzyVotersHeading" style="padding:10px 12px;color:#ffd700;font-weight:bold;font-size:20px">VOTERS</div>
-<div id="kulzzyVotersGrid" class="kulzzyVotersGrid"></div>
-<div id="kulzzyVotersDetail" class="kulzzyVotersDetail" style="display:none"></div>
+
+.back-area{
+width:100%;
+padding:15px 14px 5px;
+background:linear-gradient(140deg,#0b2046,#06122a);
+}
+
+.back-button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+padding:11px 23px;
+border:2px solid #ff2525;
+border-radius:30px;
+background:linear-gradient(135deg,#ffd700,#ffb800);
+color:#06122a;
+font-size:14px;
+font-weight:900;
+cursor:pointer;
+box-shadow:0 0 5px #ff0000,0 0 10px #ff0000,0 0 18px rgba(255,0,0,.9);
+animation:redBlink 1s infinite;
+}
+
+@keyframes redBlink{
+0%,100%{
+box-shadow:0 0 5px #ff0000,0 0 10px #ff0000,0 0 18px rgba(255,0,0,.9);
+border-color:#ff2525;
+}
+50%{
+box-shadow:0 0 2px #ff0000,0 0 5px #ff0000,0 0 10px rgba(255,0,0,.4);
+border-color:#ff9999;
+}
+}
+
+.back-button:active{transform:scale(.96)}
+
+header{
+text-align:center;
+padding:15px 14px 18px;
+background:linear-gradient(140deg,#0b2046,#06122a);
+border-bottom:1px solid #293b5d
+}
+
+header h1{
+color:var(--g);
+font-size:clamp(22px,5vw,34px);
+margin:0 0 8px
+}
+
+header p{margin:0;color:#e8edf7}
+
+.wrap{max-width:1000px;margin:auto;padding:16px}
+
+.winner{
+background:linear-gradient(120deg,#332b00,#122447);
+border:1px solid var(--g);
+border-radius:16px;
+padding:18px;
+text-align:center;
+margin-bottom:18px
+}
+
+.winner h2,.section-title{color:var(--g)}
+.winner h2{margin:0 0 10px}
+.winner img{
+width:92px;height:92px;border-radius:50%;
+object-fit:cover;border:2px solid var(--g)
+}
+.winner strong{display:block;font-size:20px;margin-top:8px}
+
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.pill{
+background:#14284b;border:1px solid #2a426a;
+border-radius:999px;padding:8px 12px;font-size:13px
+}
+
+.songs{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:12px
+}
+
+.song{
+background:var(--p);
+border:1px solid #23385e;
+border-radius:14px;
+padding:14px;
+display:flex;
+gap:12px;
+align-items:center;
+min-width:0
+}
+
+.song img{
+width:70px;height:70px;border-radius:10px;
+object-fit:cover;background:#162749
+}
+
+.info{min-width:0;flex:1}
+.song h3{font-size:16px;margin:0 0 5px;overflow-wrap:anywhere}
+.song p{font-size:13px;color:var(--m);margin:0 0 10px}
+
+.btn{
+display:inline-block;background:var(--g);color:#06122a;
+text-decoration:none;font-weight:bold;border:0;
+border-radius:9px;padding:10px 13px;cursor:pointer
+}
+
+.empty{
+padding:22px;text-align:center;color:var(--m);
+background:var(--p);border-radius:12px
+}
+
+.foot{text-align:center;color:var(--m);padding:28px 10px;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<div class="back-area">
+<button class="back-button" type="button" onclick="goBackToVoters()">
+← BACK
+</button>
+</div>
+
+<header>
+<h1>BEST STREAMING SONG OF THE MONTH</h1>
+<p>Your music. Your moment. Your stage.</p>
+</header>
+
+<main class="wrap">
+
+<section class="winner">
+<h2>🏆 OFFICIAL WINNER</h2>
+<div id="winnerBox">Winner will be announced here.</div>
 </section>
-<section id="kulzzy-wishes" class="kulzzySection"><div id="kulzzyPublished-wishes" class="kulzzyPublishedContent"></div></section>
-<section id="kulzzy-market" class="kulzzySection"><div id="kulzzyPublished-market" class="kulzzyPublishedContent"></div></section>
-<section id="kulzzy-more" class="kulzzySection"><div id="kulzzyMorePagesMenu"></div></section>
-</div><div id="kulzzyHomePageContent"></div>
-<div id="kulzzyMorePageContent"></div>
-<div id="kulzzyPullRefreshIndicator" role="status" aria-live="polite">↓ Pull down to refresh</div>
-<div id="kulzzyBackNotice" role="status" aria-live="polite"></div><script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import {getDatabase,ref,get} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
-const firebaseConfig={
-apiKey:"AIzaSyAgDCVkaem08exFEEL-0GPNKz_6Ziuchmw",
-authDomain:"kulzzy-radio-navigation.firebaseapp.com",
-databaseURL:"https://kulzzy-radio-navigation-default-rtdb.europe-west1.firebasedatabase.app",
-projectId:"kulzzy-radio-navigation",
-storageBucket:"kulzzy-radio-navigation.firebasestorage.app",
-messagingSenderId:"873616483269",
-appId:"1:873616483269:web:38bfd81c9b6eadd8f921ac",
-measurementId:"G-WNGX2S8863"
-};
+<div class="meta">
+<span class="pill" id="status">Loading competition…</span>
+<span class="pill" id="dates">Opening and closing dates not set</span>
+</div>
 
-let db=null;
-try{db=getDatabase(initializeApp(firebaseConfig));}
-catch(error){console.error("Firebase initialization error:",error);}
+<h2 class="section-title">🔥 CURRENT TOP 3</h2>
+<div class="songs" id="topSongs">
+<div class="empty">Loading rankings…</div>
+</div>
 
-const normalSections=["home","request","wishes","market","voters"];
-const sectionCache=Object.create(null);
-const sectionLoading=Object.create(null);
-let morePagesLoaded=false,morePagesLoading=null,morePagesData=[];
-let homePageLoaded=false,homePageLoading=null,homePageHTML="",homeOverlayBuilt=false;
-let kulzzyVotersLoaded=false,kulzzyVotersLoading=null,kulzzyVoterPages=[];
-const $=id=>document.getElementById(id);
+<h2 class="section-title">🎵 ALL SONGS</h2>
+<div class="songs" id="allSongs">
+<div class="empty">Loading songs…</div>
+</div>
 
-/* BACK NAVIGATION */
-const KULZZY_PARENT_ORIGIN="https://kulzzy.github.io";
-const KULZZY_MUSIC_ORIGIN="https://kulzzy.github.io";
-let kulzzyCurrentView={type:"section",section:"home"};
-let kulzzyViewStack=[];
-let kulzzyBackNoticeTimer=null;
+<div class="foot">
+KULZZY RADIO · Celebrating Lives Everyday
+</div>
 
-function showKulzzyBackMessage(message){
-const notice=$("kulzzyBackNotice");
-if(!notice)return;
-notice.textContent=message;
-notice.style.display="block";
-clearTimeout(kulzzyBackNoticeTimer);
-kulzzyBackNoticeTimer=setTimeout(()=>{notice.style.display="none";},1800);
-}
+</main>
 
-function notifyKulzzyParent(){
-const depth=Math.max(0,kulzzyViewStack.length-1);
-try{
-window.parent.postMessage({type:"KULZZY_NAV_STATE",depth,atRoot:depth===0},KULZZY_PARENT_ORIGIN);
-}catch(error){console.warn("Could not report navigation state:",error);}
-}
+<script>
+/*
+BACK BUTTON:
+Send the BACK request to the parent navigation page.
+The navigation page should handle this message by
+opening the VOTERS list directly.
+*/
 
-function saveKulzzyHistory(view,replace=false){
-if(!view)return;
-const next={...view};
-if(replace||kulzzyViewStack.length===0){kulzzyViewStack=[next];}
-else{
-const current=kulzzyViewStack[kulzzyViewStack.length-1];
-if(JSON.stringify(current)!==JSON.stringify(next))kulzzyViewStack.push(next);
-}
-kulzzyCurrentView=next;
-notifyKulzzyParent();
-}
+function goBackToVoters(){
 
-function navigateKulzzy(view){saveKulzzyHistory(view);renderKulzzyView(view);}
-
-/* CORRECTED BACK FUNCTION */
-function goBackInKulzzyNavigation(){
-
-    // Do not follow the previous browsing history.
-    // Always return directly to the VOTERS competition list.
-
-    kulzzyViewStack=[
-        {type:"section",section:"voters"}
-    ];
-
-    kulzzyCurrentView={
-        type:"section",
-        section:"voters"
+    const message={
+        type:"KULZZY_APP_BACK",
+        source:"KULZZY_MUSIC_STREAMING_PAGE"
     };
 
-    closeMorePage();
-    closeHomePage();
+    if(window.parent!==window){
 
-    const grid=$("kulzzyVotersGrid");
-    const detail=$("kulzzyVotersDetail");
-
-    if(grid){
-        grid.style.display="grid";
-    }
-
-    if(detail){
-        detail.style.display="none";
-        detail.innerHTML="";
-    }
-
-    document.querySelectorAll(".kulzzyNavBtn").forEach(button=>{
-        button.classList.toggle(
-            "active",
-            button.dataset.section==="voters"
+        window.parent.postMessage(
+            message,
+            "*"
         );
-    });
-
-    document.querySelectorAll(".kulzzySection").forEach(section=>{
-        section.classList.toggle(
-            "active",
-            section.id==="kulzzy-voters"
-        );
-    });
-
-    $("kulzzyContent").scrollTop=0;
-
-    loadKulzzyVoters();
-
-    notifyKulzzyParent();
-
-    return true;
-}
-
-/* CORRECTED MESSAGE LISTENER */
-window.addEventListener("message",event=>{
-
-    if(
-        event.origin===KULZZY_PARENT_ORIGIN&&
-        event.source===window.parent
-    ){
-        if(event.data?.type==="KULZZY_APP_BACK"){
-            goBackInKulzzyNavigation();
-        }
-
-        if(event.data?.type==="KULZZY_REQUEST_STATE"){
-            notifyKulzzyParent();
-        }
 
         return;
     }
 
-    if(
-        event.origin===KULZZY_MUSIC_ORIGIN&&
-        event.data?.type==="KULZZY_APP_BACK"&&
-        kulzzyCurrentView.type==="voter-detail"
-    ){
-        goBackInKulzzyNavigation();
-    }
+    window.history.back();
+}
+</script>
 
-});
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getDatabase,ref,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-function showPageStatus(container,message,retry){
-if(!container)return;
-container.innerHTML="";
-const box=document.createElement("div");
-box.className="kulzzyPageStatus";
-const messageText=document.createElement("div");
-messageText.textContent=message;
-box.appendChild(messageText);
-if(typeof retry==="function"){
-const button=document.createElement("button");
-button.type="button";
-button.className="kulzzyRetryButton";
-button.textContent="TRY AGAIN";
-button.addEventListener("click",retry);
-box.appendChild(button);
-}
-container.appendChild(box);
-}
-
-function getPageHTML(page){
-if(!page)return "";
-if(typeof page.html==="string"&&page.html.trim())return page.html;
-for(const field of ["content","writeUp","writeup","body","description","pageContent","htmlContent"]){
-if(typeof page[field]==="string"&&page[field].trim())return page[field];
-}
-if(page.blocks&&typeof page.blocks==="object"){
-const blocks=Object.keys(page.blocks).map(id=>{
-const block=page.blocks[id]||{};
-return {html:block.html||block.content||block.writeUp||"",order:typeof block.order==="number"?block.order:0};
-}).filter(block=>typeof block.html==="string"&&block.html.trim()).sort((a,b)=>a.order-b.order);
-if(blocks.length)return blocks.map(block=>block.html).join("\n\n");
-}
-return "";
-}
-
-function executePublishedScripts(container){
-if(!container)return;
-container.querySelectorAll("script").forEach(oldScript=>{
-const newScript=document.createElement("script");
-Array.from(oldScript.attributes).forEach(attribute=>newScript.setAttribute(attribute.name,attribute.value));
-newScript.textContent=oldScript.textContent;
-oldScript.parentNode?.replaceChild(newScript,oldScript);
-});
-}
-
-function enablePublishedTouch(container){
-if(!container)return;
-container.style.pointerEvents="auto";
-container.style.touchAction="auto";
-container.style.overscrollBehavior="auto";
-container.querySelectorAll("button,a,input,textarea,select,label,video,audio,canvas,iframe,[role='button'],[onclick]").forEach(element=>{
-element.style.pointerEvents="auto";
-element.style.touchAction="auto";
-});
-}
-
-function displayNormalContent(section,html){
-const container=$("kulzzyPublished-"+section);
-if(!container)return;
-container.innerHTML="";
-if(!html||!html.trim()){sectionCache[section]="";return;}
-const wrapper=document.createElement("div");
-wrapper.style.width="100%";
-wrapper.style.maxWidth="none";
-wrapper.style.margin="0";
-wrapper.style.padding="0";
-wrapper.innerHTML=html;
-container.appendChild(wrapper);
-executePublishedScripts(wrapper);
-enablePublishedTouch(container);
-sectionCache[section]=container.innerHTML;
-}
-
-function loadNormalSection(section){
-if(!normalSections.includes(section))return Promise.resolve();
-const container=$("kulzzyPublished-"+section);
-if(!container)return Promise.resolve();
-if(!db){
-showPageStatus(container,"The Firebase connection did not start. Check your connection and reload this page.",()=>loadNormalSection(section));
-return Promise.resolve();
-}
-if(Object.prototype.hasOwnProperty.call(sectionCache,section)){
-if(container.innerHTML===""&&sectionCache[section]){
-container.innerHTML=sectionCache[section];
-enablePublishedTouch(container);
-}else if(!sectionCache[section]&&container.innerHTML===""){
-showPageStatus(container,"No published content was found for this section. Check that the page has been published in the admin panel.",()=>{
-delete sectionCache[section];loadNormalSection(section);
-});
-}
-return Promise.resolve();
-}
-if(sectionLoading[section])return sectionLoading[section];
-sectionLoading[section]=get(ref(db,"kulzzyContent/"+section)).then(snapshot=>{
-const html=snapshot.exists()?getPageHTML(snapshot.val()):"";
-displayNormalContent(section,html);
-if(!html.trim()){
-showPageStatus(container,"No published content was found for this section. Check the published page and its Firebase path.",()=>{
-delete sectionCache[section];loadNormalSection(section);
-});
-}
-}).catch(error=>{
-console.error("Could not load section:",section,error);
-showPageStatus(container,"This page could not load from Firebase. Check your internet connection or database permissions, then try again.",()=>{
-delete sectionCache[section];loadNormalSection(section);
-});
-}).finally(()=>{delete sectionLoading[section];});
-return sectionLoading[section];
-}
-
-function ensureHomeOverlay(){
-const overlay=$("kulzzyHomePageContent");
-if(!overlay||homeOverlayBuilt)return;
-overlay.innerHTML="";
-const box=document.createElement("div");
-box.className="kulzzyHomePageContentBox";
-box.id="kulzzyHomeOverlayBox";
-overlay.appendChild(box);
-homeOverlayBuilt=true;
-}
-
-function renderHomeOverlay(){
-ensureHomeOverlay();
-const box=$("kulzzyHomeOverlayBox");
-if(!box)return;
-box.innerHTML="";
-if(homePageHTML){
-box.innerHTML=homePageHTML;
-executePublishedScripts(box);
-enablePublishedTouch(box);
-}else if(homePageLoaded){
-showPageStatus(box,"No published Home content was found. Check that the Home page is published in the admin panel.",()=>{
-homePageLoaded=false;homePageHTML="";openHomePage();
-});
-}
-}
-
-function openHomePage(){
-const overlay=$("kulzzyHomePageContent");
-if(!overlay)return Promise.resolve();
-ensureHomeOverlay();
-overlay.classList.add("open");
-renderHomeOverlay();
-if(homePageLoaded||homePageLoading)return homePageLoading||Promise.resolve();
-if(!db){
-showPageStatus($("kulzzyHomeOverlayBox"),"The Firebase connection did not start. Check your connection and reload this page.",()=>openHomePage());
-return Promise.resolve();
-}
-homePageLoading=get(ref(db,"kulzzyContent/home")).then(snapshot=>{
-homePageHTML=snapshot.exists()?getPageHTML(snapshot.val()):"";
-homePageLoaded=true;
-displayNormalContent("home",homePageHTML);
-if(overlay.classList.contains("open"))renderHomeOverlay();
-}).catch(error=>{
-console.error("Home loading error:",error);
-showPageStatus($("kulzzyHomeOverlayBox"),"Home could not load from Firebase. Check your internet connection or database permissions, then try again.",()=>{
-homePageLoaded=false;homePageHTML="";openHomePage();
-});
-}).finally(()=>{homePageLoading=null;});
-return homePageLoading;
-}
-
-function closeHomePage(){$("kulzzyHomePageContent")?.classList.remove("open");}
-
-function getMorePageIcon(title){
-const text=String(title||"").toLowerCase();
-if(text.includes("about"))return "ℹ️";
-if(text.includes("contact"))return "📞";
-if(text.includes("chat"))return "💬";
-if(text.includes("radio"))return "📻";
-if(text.includes("program"))return "🎙️";
-if(text.includes("business")||text.includes("market")||text.includes("service"))return "💼";
-if(text.includes("birthday")||text.includes("celebration")||text.includes("birth"))return "🎂";
-if(text.includes("music")||text.includes("song"))return "🎵";
-if(text.includes("news"))return "📰";
-if(text.includes("event"))return "🎉";
-if(text.includes("photo")||text.includes("picture")||text.includes("gallery"))return "🖼️";
-if(text.includes("video"))return "🎬";
-if(text.includes("live"))return "🔴";
-if(text.includes("request"))return "📝";
-if(text.includes("wish"))return "💝";
-if(text.includes("install")||text.includes("app"))return "📱";
-return "📄";
-}
-
-function loadMorePages(){
-const menu=$("kulzzyMorePagesMenu");
-if(!menu)return Promise.resolve();
-if(!db){
-showPageStatus(menu,"The Firebase connection did not start, so More pages cannot load. Check your connection and reload.",()=>loadMorePages());
-return Promise.resolve();
-}
-if(morePagesLoaded)return Promise.resolve();
-if(morePagesLoading)return morePagesLoading;
-morePagesLoading=get(ref(db,"kulzzyMorePages")).then(snapshot=>{
-const raw=snapshot.exists()?snapshot.val():{};
-morePagesData=Object.keys(raw).map(id=>{
-const page=raw[id]||{};
-return {id,title:page.title||page.name||"Untitled Page",html:getPageHTML(page),order:typeof page.order==="number"?page.order:0};
-}).sort((a,b)=>a.order-b.order);
-const fragment=document.createDocumentFragment();
-morePagesData.forEach(page=>{
-const button=document.createElement("button");
-button.type="button";
-button.className="kulzzyMorePageButton";
-const icon=document.createElement("span");
-icon.className="kulzzyMorePageIcon";
-icon.textContent=getMorePageIcon(page.title);
-const title=document.createElement("span");
-title.className="kulzzyMorePageTitle";
-title.textContent=page.title;
-button.append(icon,title);
-button.addEventListener("click",()=>navigateKulzzy({type:"more-detail",id:page.id}));
-fragment.appendChild(button);
-});
-menu.replaceChildren(fragment);
-if(!morePagesData.length)menu.innerHTML='<div style="padding:15px;color:white">No additional pages available.</div>';
-morePagesLoaded=true;
-}).catch(error=>{
-console.error("More pages loading error:",error);
-showPageStatus(menu,"More pages could not load from Firebase. Check your internet connection or database permissions, then try again.",()=>{
-morePagesLoaded=false;loadMorePages();
-});
-}).finally(()=>{morePagesLoading=null;});
-return morePagesLoading;
-}
-
-function showMorePage(page,button,addHistory=true){
-const menu=$("kulzzyMorePagesMenu");
-const content=$("kulzzyMorePageContent");
-if(!content||!menu)return;
-if(addHistory)saveKulzzyHistory({type:"more-detail",id:page.id});
-document.querySelectorAll(".kulzzyMorePageButton").forEach(item=>item.classList.remove("active"));
-if(button)button.classList.add("active");
-content.innerHTML="";
-const close=document.createElement("button");
-close.type="button";
-close.className="kulzzyMorePageClose";
-close.textContent="✕";
-close.setAttribute("aria-label","Close page");
-close.addEventListener("click",()=>goBackInKulzzyNavigation());
-const box=document.createElement("div");
-box.className="kulzzyMorePageContentBox";
-box.innerHTML=page.html||'<div style="padding:15px;color:white">This page has no content yet.</div>';
-content.append(close,box);
-content.classList.add("open");
-content.scrollTop=0;
-menu.style.display="none";
-executePublishedScripts(box);
-enablePublishedTouch(box);
-}
-
-function closeMorePage(){
-const content=$("kulzzyMorePageContent");
-const menu=$("kulzzyMorePagesMenu");
-if(content){content.classList.remove("open");content.innerHTML="";content.scrollTop=0;}
-if(menu)menu.style.display="flex";
-document.querySelectorAll(".kulzzyMorePageButton").forEach(item=>item.classList.remove("active"));
-}
-
-function kulzzyVoterHtml(page){
-if(typeof page.html==="string"&&page.html.trim())return page.html;
-for(const key of ["content","writeUp","description","body"]){
-if(typeof page[key]==="string"&&page[key].trim())return page[key];
-}
-return "";
-}
-
-function loadKulzzyVoters(){
-const grid=$("kulzzyVotersGrid");
-const detail=$("kulzzyVotersDetail");
-if(!grid)return Promise.resolve();
-if(!db){
-showPageStatus(grid,"The Firebase connection did not start, so voting competitions cannot load. Check your connection and reload.",()=>loadKulzzyVoters());
-return Promise.resolve();
-}
-if(kulzzyVotersLoaded)return Promise.resolve();
-if(kulzzyVotersLoading)return kulzzyVotersLoading;
-grid.innerHTML="";
-kulzzyVotersLoading=get(ref(db,"kulzzyVotersPages")).then(snapshot=>{
-const raw=snapshot.exists()?snapshot.val():{};
-kulzzyVoterPages=Object.keys(raw).map(id=>({id,...(raw[id]||{})})).filter(page=>page.published!==false).sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
-grid.innerHTML="";
-if(detail){detail.style.display="none";detail.innerHTML="";}
-if(!kulzzyVoterPages.length){
-grid.innerHTML='<div class="kulzzyVotersEmpty">No voting competitions are available right now.</div>';
-kulzzyVotersLoaded=true;
-return;
-}
-const fragment=document.createDocumentFragment();
-kulzzyVoterPages.forEach(page=>{
-const card=document.createElement("button");
-card.type="button";
-card.className="kulzzyVoterCard";
-const image=document.createElement("img");
-image.loading="lazy";
-image.alt=page.title||"Voting competition";
-image.src=page.image||page.imageUrl||"data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="#10274c"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ffd700" font-size="24">KULZZY VOTERS</text></svg>');
-image.onerror=()=>{image.style.display="none";};
-const title=document.createElement("span");
-title.className="kulzzyVoterCardTitle";
-title.textContent=page.title||"Voting Competition";
-card.append(image,title);
-card.addEventListener("click",()=>navigateKulzzy({type:"voter-detail",id:page.id}));
-fragment.appendChild(card);
-});
-grid.appendChild(fragment);
-kulzzyVotersLoaded=true;
-}).catch(error=>{
-console.error("Could not load Voters pages:",error);
-showPageStatus(grid,"Voting competitions could not be retrieved from Firebase. Check your internet connection or database permissions, then try again.",()=>{
-kulzzyVotersLoaded=false;loadKulzzyVoters();
-});
-}).finally(()=>{kulzzyVotersLoading=null;});
-return kulzzyVotersLoading;
-}
-
-function openKulzzyVoterPage(page,addHistory=true){
-const grid=$("kulzzyVotersGrid");
-const detail=$("kulzzyVotersDetail");
-if(!grid||!detail)return;
-if(addHistory)saveKulzzyHistory({type:"voter-detail",id:page.id});
-grid.style.display="none";
-detail.style.display="block";
-detail.innerHTML="";
-const back=document.createElement("button");
-back.type="button";
-back.className="kulzzyVoterBack";
-back.textContent="← BACK TO VOTING COMPETITIONS";
-back.addEventListener("click",()=>goBackInKulzzyNavigation());
-const title=document.createElement("div");
-title.className="kulzzyVoterDetailTitle";
-title.textContent=page.title||"Voting Competition";
-const body=document.createElement("div");
-body.className="kulzzyVoterDetailBody";
-detail.append(back,title,body);
-const target=page.url||page.pageUrl||page.link||"";
-if(target.trim()){
-const frame=document.createElement("iframe");
-frame.src=target.trim();
-frame.title=page.title||"Voting Competition";
-frame.loading="eager";
-frame.setAttribute("allow","autoplay; clipboard-write; encrypted-media; fullscreen");
-body.appendChild(frame);
-}else{
-const html=kulzzyVoterHtml(page);
-if(html){body.innerHTML=html;executePublishedScripts(body);enablePublishedTouch(body);}
-else body.innerHTML='<div class="kulzzyVotersEmpty">This competition has no page content or voting link yet.</div>';
-}
-$("kulzzyContent").scrollTop=0;
-}
-
-function renderKulzzyView(view){
-if(!view)return;
-if(view.type==="voter-detail"){
-const page=kulzzyVoterPages.find(item=>item.id===view.id);
-if(page){openKulzzyVoterPage(page,false);}
-else openSection("voters",document.querySelector('.kulzzyNavBtn[data-section="voters"]'));
-return;
-}
-if(view.type==="more-detail"){
-const page=morePagesData.find(item=>item.id===view.id);
-if(page)showMorePage(page,null,false);
-else openSection("more",document.querySelector('.kulzzyNavBtn[data-section="more"]'));
-return;
-}
-if(view.type==="section"){
-const section=normalSections.includes(view.section)||view.section==="more"?view.section:"home";
-const button=document.querySelector('.kulzzyNavBtn[data-section="'+section+'"]');
-openSection(section,button);
-}
-}
-
-function openSection(section,button){
-if(!normalSections.includes(section)&&section!=="more")return;
-const homeOverlay=$("kulzzyHomePageContent");
-const moreContent=$("kulzzyMorePageContent");
-const moreMenu=$("kulzzyMorePagesMenu");
-document.querySelectorAll(".kulzzyNavBtn").forEach(item=>item.classList.toggle("active",item===button));
-if(section!=="home"&&homeOverlay)homeOverlay.classList.remove("open");
-if(section!=="more"&&moreContent){
-moreContent.classList.remove("open");
-moreContent.innerHTML="";
-if(moreMenu)moreMenu.style.display="flex";
-}
-try{localStorage.setItem("kulzzyLastSection",section);}catch(error){}
-if(section==="home"){
-document.querySelectorAll(".kulzzySection").forEach(item=>item.classList.remove("active"));
-openHomePage();
-return;
-}
-document.querySelectorAll(".kulzzySection").forEach(item=>item.classList.toggle("active",item.id==="kulzzy-"+section));
-if(section==="more"){loadMorePages();return;}
-if(section==="voters"){
-const grid=$("kulzzyVotersGrid");
-const detail=$("kulzzyVotersDetail");
-if(grid)grid.style.display="grid";
-if(detail){detail.style.display="none";detail.innerHTML="";}
-loadKulzzyVoters();
-return;
-}
-loadNormalSection(section);
-}
-
-window.kulzzyOpen=function(section,button){
-const actualButton=button||document.querySelector('.kulzzyNavBtn[data-section="'+section+'"]');
-navigateKulzzy({type:"section",section});
-if(actualButton)document.querySelectorAll(".kulzzyNavBtn").forEach(item=>item.classList.toggle("active",item===actualButton));
+const cfg={
+apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkUXfb9pv9E",
+authDomain:"music-streaming-e724e.firebaseapp.com",
+databaseURL:"https://music-streaming-e724e-default-rtdb.europe-west1.firebasedatabase.app",
+projectId:"music-streaming-e724e",
+storageBucket:"music-streaming-e724e.firebasestorage.app",
+messagingSenderId:"543568067808",
+appId:"1:543568067808:web:495540085bf8b3e080a485",
+measurementId:"G-7KMXGYVCF9"
 };
 
-document.querySelectorAll(".kulzzyNavBtn").forEach(button=>{
-button.addEventListener("click",event=>{
-event.preventDefault();
-navigateKulzzy({type:"section",section:button.dataset.section});
+const app=initializeApp(cfg),
+db=getDatabase(app),
+auth=getAuth(app),
+$=x=>document.getElementById(x),
+esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+let songs={},votes={},settings={},winner={};
+
+signInAnonymously(auth).catch(console.warn);
+
+function dt(v){
+if(!v)return"TBA";
+const d=new Date(v);
+return isNaN(d)?"TBA":d.toLocaleDateString();
+}
+
+function render(){
+
+const list=Object.entries(songs).map(([id,s])=>{
+let n=0;
+Object.values(votes[id]||{}).forEach(month=>n+=Object.keys(month||{}).length);
+return{id,...s,plays:n};
+}).filter(s=>s.active!==false).sort((a,b)=>b.plays-a.plays);
+
+$("status").textContent=settings.openDate&&settings.closeDate?
+(Date.now()<new Date(settings.openDate)?"Competition opens soon":
+Date.now()>new Date(settings.closeDate)?"Competition closed":
+"Competition is open"):
+"Competition dates not set";
+
+$("dates").textContent="Opens: "+dt(settings.openDate)+" · Closes: "+dt(settings.closeDate);
+
+$("winnerBox").innerHTML=winner.name?
+((winner.photo?'<img alt="" src="'+esc(winner.photo)+'">':"")+
+'<strong>'+esc(winner.name)+'</strong>'+
+'<p>'+esc(winner.songTitle||"")+'</p>'):
+"Winner will be announced here.";
+
+const card=s=>
+'<article class="song">'+
+(s.photo?'<img alt="" src="'+esc(s.photo)+'">':
+'<div style="width:70px;height:70px;background:#162749;border-radius:10px"></div>')+
+'<div class="info">'+
+'<h3>'+esc(s.title||"Untitled song")+'</h3>'+
+'<p>'+esc(s.artist||"Unknown artiste")+' · '+s.plays+' qualifying streams</p>'+
+'<a class="btn" href="player.html?song='+encodeURIComponent(s.id)+'" target="_blank" rel="noopener">Listen & Support</a>'+
+'</div></article>';
+
+$("topSongs").innerHTML=list.length?
+list.slice(0,3).map(card).join(""):
+'<div class="empty">No songs have been added yet.</div>';
+
+$("allSongs").innerHTML=list.length?
+list.map(card).join(""):
+'<div class="empty">Songs will appear here soon.</div>';
+
+}
+
+onValue(ref(db,"songs"),s=>{
+songs=s.val()||{};
+render();
+},e=>{
+$("allSongs").innerHTML='<div class="empty">Could not load songs. Check Firebase rules.</div>';
+console.error(e);
 });
+
+onValue(ref(db,"votes"),s=>{
+votes=s.val()||{};
+render();
 });
 
-let savedSection=null;
-try{savedSection=localStorage.getItem("kulzzyLastSection");}catch(error){}
-if(!savedSection||(!normalSections.includes(savedSection)&&savedSection!=="more"))savedSection="home";
-const initialButton=document.querySelector('.kulzzyNavBtn[data-section="'+savedSection+'"]')||document.querySelector('.kulzzyNavBtn[data-section="home"]');
+onValue(ref(db,"settings"),s=>{
+settings=s.val()||{};
+render();
+});
 
-saveKulzzyHistory({type:"section",section:savedSection},true);
-openSection(savedSection,initialButton);
-notifyKulzzyParent();
+onValue(ref(db,"winner"),s=>{
+winner=s.val()||{};
+render();
+});
 
-if(window.parent!==window){
-window.parent.postMessage({type:"KULZZY_REQUEST_STATE"},KULZZY_PARENT_ORIGIN);
-}
+</script>
 
-window.setTimeout(()=>{
-if(!db)return;
-Promise.allSettled([
-loadNormalSection("request"),
-loadNormalSection("wishes"),
-loadNormalSection("market"),
-loadMorePages(),
-loadKulzzyVoters()
-]);
-},50);
-
-/* PULL DOWN REFRESH */
-(function(){
-"use strict";
-const indicator=$("kulzzyPullRefreshIndicator");
-const REFRESH_DISTANCE=85;
-const MAX_HORIZONTAL_RATIO=1.1;
-let startY=0,startX=0,tracking=false,armed=false,refreshing=false,currentDistance=0;
-
-function getActiveScroller(){
-const more=$("kulzzyMorePageContent");
-const home=$("kulzzyHomePageContent");
-if(more&&more.classList.contains("open"))return more;
-if(home&&home.classList.contains("open"))return home;
-return $("kulzzyContent");
-}
-
-function showIndicator(message,distance){
-if(!indicator)return;
-indicator.textContent=message;
-indicator.classList.add("visible");
-const movement=Math.min(distance||0,55);
-indicator.style.transform="translate(-50%,"+(movement*0.45)+"px)";
-}
-
-function hideIndicator(){
-if(!indicator)return;
-indicator.classList.remove("visible");
-indicator.textContent="↓ Pull down to refresh";
-indicator.style.transform="translate(-50%,-12px)";
-}
-
-function resetGesture(){tracking=false;armed=false;currentDistance=0;}
-
-function refreshWholeNavigation(){
-if(refreshing)return;
-refreshing=true;
-resetGesture();
-showIndicator("Refreshing all pages...",0);
-window.setTimeout(()=>window.location.reload(),350);
-}
-
-document.addEventListener("touchstart",function(event){
-if(refreshing||event.touches.length!==1){resetGesture();return;}
-const scroller=getActiveScroller();
-if(!scroller||scroller.scrollTop>2){resetGesture();return;}
-startY=event.touches[0].clientY;
-startX=event.touches[0].clientX;
-tracking=true;
-armed=false;
-currentDistance=0;
-},{passive:true,capture:true});
-
-document.addEventListener("touchmove",function(event){
-if(!tracking||refreshing||event.touches.length!==1)return;
-const currentY=event.touches[0].clientY;
-const currentX=event.touches[0].clientX;
-const deltaY=currentY-startY;
-const deltaX=currentX-startX;
-if(Math.abs(deltaX)>Math.abs(deltaY)*MAX_HORIZONTAL_RATIO){resetGesture();hideIndicator();return;}
-const scroller=getActiveScroller();
-if(!scroller||scroller.scrollTop>2){resetGesture();hideIndicator();return;}
-if(deltaY>8){
-currentDistance=deltaY;
-if(deltaY>=REFRESH_DISTANCE){armed=true;showIndicator("Release to refresh",deltaY);}
-else{armed=false;showIndicator("↓ Pull down to refresh",deltaY);}
-}
-},{passive:true,capture:true});
-
-document.addEventListener("touchend",function(){
-if(!tracking)return;
-const shouldRefresh=armed&&currentDistance>=REFRESH_DISTANCE;
-resetGesture();
-if(shouldRefresh)refreshWholeNavigation();
-else hideIndicator();
-},{passive:true,capture:true});
-
-document.addEventListener("touchcancel",function(){resetGesture();hideIndicator();},{passive:true,capture:true});
-})();
-</script></body>
+</body>
 </html>
