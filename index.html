@@ -552,26 +552,19 @@ currentSong=null;
 
 }
 
-/* KULZZY UNIVERSAL MEDIA CONTROLLER VERSION 3.1 */
+/*
+PLAYER-SPECIFIC STOP HOOK
+The external connector calls this function.
+*/
 
-window.KULZZY_MEDIA_PLAYER_CONFIG = {
-  playerId: "best-streaming-song",
-  playerName: "Music of the Month",
-  stop: function(detail) {
-    stopPlayer();
-    $("playerStatus").textContent =
-      "Playback stopped because another Kulzzy Radio player started.";
-  }
-};
+window.KULZZY_STOP_PLAYER=function(detail){
 
-const kulzzyMediaControllerScript = document.createElement("script");
-kulzzyMediaControllerScript.src =
-  "https://raw.githubusercontent.com/kulzzy/KULZZY-UNIVERSAL-MEDIA-CONTROL/main/controller.js";
-kulzzyMediaControllerScript.async = true;
-kulzzyMediaControllerScript.onerror = function() {
-  console.error("Kulzzy Universal Media Controller could not be loaded.");
+stopPlayer();
+
+$("playerStatus").textContent=
+"Playback stopped because another Kulzzy Radio player started.";
+
 };
-document.head.appendChild(kulzzyMediaControllerScript);
 
 /* PLAY SONG */
 
@@ -993,6 +986,9 @@ render();
 });
 
 </script>
+
+<!-- EXTERNAL UNIVERSAL MEDIA CONNECTOR -->
+<script src="./connector.js"></script>
 
 </body>
 </html>
