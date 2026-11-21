@@ -208,18 +208,6 @@ margin-top:10px;
 min-height:0
 }
 
-.media-diagnostic{
-margin-top:9px;
-padding:9px;
-border:1px solid #526887;
-border-radius:8px;
-background:#071a35;
-color:#ffd700;
-font-size:12px;
-line-height:1.5;
-overflow-wrap:anywhere
-}
-
 .player-note{
 color:var(--m);
 font-size:12px;
@@ -268,10 +256,6 @@ font-size:13px
 
 <div class="player-status" id="playerStatus">
 Select a song below to start listening.
-</div>
-
-<div class="media-diagnostic" id="mediaDiagnostic">
-Radio connection: Waiting for a song to be played.
 </div>
 
 <p class="player-note">
@@ -325,145 +309,6 @@ const auth=getAuth(app);
 const $=id=>document.getElementById(id);
 
 const month=new Date().toISOString().slice(0,7).replace("-","");
-
-/* UNIVERSAL MEDIA CONTROLLER */
-
-const MEDIA_PLAYER_ID="best-streaming-song";
-const MAIN_APP_ORIGIN="https://kulzzy-radio-main-app.pages.dev";
-
-let mediaCommandSequence=0;
-let mediaAckTimer=null;
-let lastMediaCommandId="";
-
-function showMediaDiagnostic(message){
-$("mediaDiagnostic").textContent=
-"Radio connection: "+message;
-}
-
-function sendRadioControl(action){
-
-const universalAction=
-action==="pause"?"play":"stop";
-
-const commandId=
-Date.now()+"-"+
-(++mediaCommandSequence)+"-"+
-Math.random().toString(36).slice(2);
-
-const message={
-type:"KULZZY_MEDIA_CONTROL",
-playerId:MEDIA_PLAYER_ID,
-action:universalAction,
-commandId:commandId
-};
-
-if(universalAction==="play"){
-
-lastMediaCommandId=commandId;
-
-showMediaDiagnostic(
-"Sending PLAY command to the Main App..."
-);
-
-clearTimeout(mediaAckTimer);
-
-mediaAckTimer=setTimeout(()=>{
-
-if(lastMediaCommandId===commandId){
-
-showMediaDiagnostic(
-"No acknowledgement received from the Main App. The connection needs checking."
-);
-
-}
-
-},4000);
-
-}
-
-try{
-
-window.top.postMessage(message,"*");
-
-}catch(error){
-
-clearTimeout(mediaAckTimer);
-
-showMediaDiagnostic(
-"Unable to send command: "+error.message
-);
-
-console.warn(
-"Kulzzy universal media communication failed:",
-error
-);
-
-}
-
-}
-
-/* RECEIVE MAIN APP ACKNOWLEDGEMENT */
-
-window.addEventListener("message",function(event){
-
-if(event.origin!==MAIN_APP_ORIGIN)return;
-
-const data=event.data;
-
-if(!data||typeof data!=="object")return;
-
-if(data.type!=="KULZZY_MEDIA_CONTROL_ACK")return;
-
-if(data.playerId!==MEDIA_PLAYER_ID)return;
-
-clearTimeout(mediaAckTimer);
-
-if(data.action==="play"){
-
-if(data.radioPaused){
-
-showMediaDiagnostic(
-"SUCCESS: Main App received the song PLAY command and sent the radio PAUSE instruction. Active media players: "+
-data.activePlayers
-);
-
-}else{
-
-showMediaDiagnostic(
-"Main App received the command, but its controller reports that the radio is not marked as paused."
-);
-
-}
-
-}else if(data.action==="stop"){
-
-showMediaDiagnostic(
-"Main App received the STOP command. Active media players: "+
-data.activePlayers
-);
-
-}
-
-});
-
-/* SONG SWITCH PROTECTION */
-
-let switchingSong=false;
-let switchingTimer=null;
-
-function suppressSongSwitchPause(){
-
-switchingSong=true;
-
-if(switchingTimer){
-clearTimeout(switchingTimer);
-}
-
-switchingTimer=setTimeout(()=>{
-switchingSong=false;
-},500);
-
-}
 
 /* HTML ESCAPE */
 
@@ -689,8 +534,6 @@ function stopPlayer(){
 
 const audio=$("audio");
 
-suppressSongSwitchPause();
-
 if(timer){
 
 clearInterval(timer);
@@ -708,6 +551,27 @@ done=false;
 currentSong=null;
 
 }
+
+/* KULZZY UNIVERSAL MEDIA CONTROLLER VERSION 3.1 */
+
+window.KULZZY_MEDIA_PLAYER_CONFIG = {
+  playerId: "best-streaming-song",
+  playerName: "Music of the Month",
+  stop: function(detail) {
+    stopPlayer();
+    $("playerStatus").textContent =
+      "Playback stopped because another Kulzzy Radio player started.";
+  }
+};
+
+const kulzzyMediaControllerScript = document.createElement("script");
+kulzzyMediaControllerScript.src =
+  "https://raw.githubusercontent.com/kulzzy/KULZZY-UNIVERSAL-MEDIA-CONTROL/main/controller.js";
+kulzzyMediaControllerScript.async = true;
+kulzzyMediaControllerScript.onerror = function() {
+  console.error("Kulzzy Universal Media Controller could not be loaded.");
+};
+document.head.appendChild(kulzzyMediaControllerScript);
 
 /* PLAY SONG */
 
@@ -750,9 +614,6 @@ if(!url){
 
 $("playerStatus").textContent=
 "This song has no playable audio link.";
-
-sendRadioControl("resume");
-
 return;
 
 }
@@ -761,9 +622,6 @@ if(!competitionOpen()){
 
 $("playerStatus").textContent=
 "The competition is not currently open.";
-
-sendRadioControl("resume");
-
 return;
 
 }
@@ -787,9 +645,6 @@ await audio.play();
 
 $("playerStatus").textContent=
 "Press the play button to start listening.";
-
-sendRadioControl("resume");
-
 console.warn(error);
 
 }
@@ -800,18 +655,7 @@ console.warn(error);
 
 $("audio").addEventListener("play",()=>{
 
-switchingSong=false;
-
-if(switchingTimer){
-
-clearTimeout(switchingTimer);
-switchingTimer=null;
-
-}
-
 if(!currentSong)return;
-
-sendRadioControl("pause");
 
 started=true;
 
@@ -858,12 +702,6 @@ timer=null;
 
 }
 
-if(!switchingSong){
-
-sendRadioControl("resume");
-
-}
-
 if(!done&&currentSong){
 
 $("playerStatus").textContent=
@@ -886,8 +724,6 @@ timer=null;
 
 }
 
-sendRadioControl("resume");
-
 if(!done){
 
 $("playerStatus").textContent=
@@ -902,8 +738,6 @@ $("playerStatus").textContent=
 $("audio").addEventListener("error",()=>{
 
 if(currentSong){
-
-sendRadioControl("resume");
 
 $("playerStatus").textContent=
 "This song could not be played. Please try another song.";
