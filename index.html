@@ -312,21 +312,16 @@ const month=new Date().toISOString().slice(0,7).replace("-","");
 
 /* UNIVERSAL MEDIA CONTROLLER */
 
-const MAIN_APP_ORIGIN="https://kulzzy-radio-main-app.pages.dev";
+/*
+The music page can be opened inside either Main App address.
+The Main App validates the actual sender origin.
+*/
 
 const MEDIA_PLAYER_ID="best-streaming-song";
 
 let mediaCommandSequence=0;
 
 function sendRadioControl(action){
-
-/*
-Existing calls:
-pause  = this player started playing
-resume = this player released audio ownership
-
-The Main App receives the universal protocol.
-*/
 
 const universalAction=
 action==="pause"?"play":"stop";
@@ -343,10 +338,13 @@ Math.random().toString(36).slice(2)
 
 try{
 
-window.top.postMessage(
-message,
-MAIN_APP_ORIGIN
-);
+/*
+Send to the top-level Main App.
+Wildcard is required because the Main App
+can be opened from either supported address.
+*/
+
+window.top.postMessage(message,"*");
 
 }catch(error){
 
@@ -724,8 +722,6 @@ switchingTimer=null;
 
 if(!currentSong)return;
 
-/* TELL MAIN APP THIS PLAYER IS ACTIVE */
-
 sendRadioControl("pause");
 
 started=true;
@@ -772,8 +768,6 @@ clearInterval(timer);
 timer=null;
 
 }
-
-/* Do not release ownership during song switching. */
 
 if(!switchingSong){
 
