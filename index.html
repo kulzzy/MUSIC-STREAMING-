@@ -208,6 +208,18 @@ margin-top:10px;
 min-height:0
 }
 
+.media-diagnostic{
+margin-top:9px;
+padding:9px;
+border:1px solid #526887;
+border-radius:8px;
+background:#071a35;
+color:#ffd700;
+font-size:12px;
+line-height:1.5;
+overflow-wrap:anywhere
+}
+
 .player-note{
 color:var(--m);
 font-size:12px;
@@ -256,6 +268,10 @@ font-size:13px
 
 <div class="player-status" id="playerStatus">
 Select a song below to start listening.
+</div>
+
+<div class="media-diagnostic" id="mediaDiagnostic">
+Radio connection: Waiting for a song to be played.
 </div>
 
 <p class="player-note">
@@ -312,41 +328,70 @@ const month=new Date().toISOString().slice(0,7).replace("-","");
 
 /* UNIVERSAL MEDIA CONTROLLER */
 
-/*
-The music page can be opened inside either Main App address.
-The Main App validates the actual sender origin.
-*/
-
 const MEDIA_PLAYER_ID="best-streaming-song";
+const MAIN_APP_ORIGIN="https://kulzzy-radio-main-app.pages.dev";
 
 let mediaCommandSequence=0;
+let mediaAckTimer=null;
+let lastMediaCommandId="";
+
+function showMediaDiagnostic(message){
+$("mediaDiagnostic").textContent=
+"Radio connection: "+message;
+}
 
 function sendRadioControl(action){
 
 const universalAction=
 action==="pause"?"play":"stop";
 
+const commandId=
+Date.now()+"-"+
+(++mediaCommandSequence)+"-"+
+Math.random().toString(36).slice(2);
+
 const message={
 type:"KULZZY_MEDIA_CONTROL",
 playerId:MEDIA_PLAYER_ID,
 action:universalAction,
-commandId:
-Date.now()+"-"+
-(++mediaCommandSequence)+"-"+
-Math.random().toString(36).slice(2)
+commandId:commandId
 };
 
-try{
+if(universalAction==="play"){
 
-/*
-Send to the top-level Main App.
-Wildcard is required because the Main App
-can be opened from either supported address.
-*/
+lastMediaCommandId=commandId;
+
+showMediaDiagnostic(
+"Sending PLAY command to the Main App..."
+);
+
+clearTimeout(mediaAckTimer);
+
+mediaAckTimer=setTimeout(()=>{
+
+if(lastMediaCommandId===commandId){
+
+showMediaDiagnostic(
+"No acknowledgement received from the Main App. The connection needs checking."
+);
+
+}
+
+},4000);
+
+}
+
+try{
 
 window.top.postMessage(message,"*");
 
 }catch(error){
+
+clearTimeout(mediaAckTimer);
+
+showMediaDiagnostic(
+"Unable to send command: "+error.message
+);
 
 console.warn(
 "Kulzzy universal media communication failed:",
@@ -356,6 +401,50 @@ error
 }
 
 }
+
+/* RECEIVE MAIN APP ACKNOWLEDGEMENT */
+
+window.addEventListener("message",function(event){
+
+if(event.origin!==MAIN_APP_ORIGIN)return;
+
+const data=event.data;
+
+if(!data||typeof data!=="object")return;
+
+if(data.type!=="KULZZY_MEDIA_CONTROL_ACK")return;
+
+if(data.playerId!==MEDIA_PLAYER_ID)return;
+
+clearTimeout(mediaAckTimer);
+
+if(data.action==="play"){
+
+if(data.radioPaused){
+
+showMediaDiagnostic(
+"SUCCESS: Main App received the song PLAY command and sent the radio PAUSE instruction. Active media players: "+
+data.activePlayers
+);
+
+}else{
+
+showMediaDiagnostic(
+"Main App received the command, but its controller reports that the radio is not marked as paused."
+);
+
+}
+
+}else if(data.action==="stop"){
+
+showMediaDiagnostic(
+"Main App received the STOP command. Active media players: "+
+data.activePlayers
+);
+
+}
+
+});
 
 /* SONG SWITCH PROTECTION */
 
