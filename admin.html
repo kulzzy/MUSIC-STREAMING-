@@ -62,4 +62,6 @@ function esc(v){return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 onValue(ref(db,"songs"),s=>{songs=s.val()||{};$("songList").innerHTML=Object.entries(songs).map(([id,s])=>'<div class="item"><b>'+esc(s.title)+'</b> — '+esc(s.artist)+'<br><button class="btn secondary" data-edit="'+id+'">Edit</button> <button class="btn secondary" data-delete="'+id+'">Delete</button></div>').join("")||"No songs added yet."});
 $("songList").onclick=async e=>{const id=e.target.dataset.edit||e.target.dataset.delete;if(!id)return;const s=songs[id];if(e.target.dataset.edit){$("songId").value=id;$("title").value=s.title||"";$("artist").value=s.artist||"";$("songFile").value="";$("photoUrl").value=s.photo||"";window.scrollTo({top:0,behavior:"smooth"})}else if(confirm("Delete this song?")){try{await remove(ref(db,"songs/"+id));say("songMsg","Song deleted.")}catch(err){say("songMsg","Delete failed: "+err.message)}}};
 $("saveWinner").onclick=async()=>{const name=$("winnerName").value.trim(),songTitle=$("winnerTitle").value.trim();if(!name||!songTitle){say("winnerMsg","Enter winner name and song title.");return}try{await set(ref(db,"winner"),{name,songTitle,photo:$("winnerPhoto").value.trim(),announcedAt:Date.now()});say("winnerMsg","Official winner published.")}catch(e){say("winnerMsg","Could not publish: "+e.message)}};
-</script></body></html>
+</script>
+</body>
+</html>
