@@ -4,990 +4,342 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06122a">
-<title>Best Streaming Song of the Month | Kulzzy Radio</title>
+<title>Listen | Kulzzy Radio</title>
 
 <style>
-:root{
---n:#06122a;
---p:#0c1c3b;
---g:#ffd700;
---m:#b8c2d8;
-}
-
+:root{--n:#06122a;--p:#0c1c3b;--g:#ffd700}
 *{box-sizing:border-box}
-
-body{
-margin:0;
-background:var(--n);
-color:#fff;
-font-family:Arial,sans-serif
-}
-
-header{
-text-align:center;
-padding:15px 14px 18px;
-background:linear-gradient(140deg,#0b2046,#06122a);
-border-bottom:1px solid #293b5d
-}
-
-header h1{
-color:var(--g);
-font-size:clamp(22px,5vw,34px);
-margin:0 0 8px
-}
-
-header p{
-margin:0;
-color:#e8edf7
-}
-
-.wrap{
-max-width:1000px;
-margin:auto;
-padding:16px
-}
-
-.winner{
-background:linear-gradient(120deg,#332b00,#122447);
-border:1px solid var(--g);
-border-radius:16px;
-padding:18px;
-text-align:center;
-margin-bottom:18px
-}
-
-.winner h2,.section-title{
-color:var(--g)
-}
-
-.winner h2{
-margin:0 0 10px
-}
-
-.winner img{
-width:92px;
-height:92px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid var(--g)
-}
-
-.winner strong{
-display:block;
-font-size:20px;
-margin-top:8px
-}
-
-.meta{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin:12px 0
-}
-
-.pill{
-background:#14284b;
-border:1px solid #2a426a;
-border-radius:999px;
-padding:8px 12px;
-font-size:13px
-}
-
-.songs{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:12px
-}
-
-.song{
-background:var(--p);
-border:1px solid #23385e;
-border-radius:14px;
-padding:14px;
-display:flex;
-gap:12px;
-align-items:center;
-min-width:0
-}
-
-.song img{
-width:70px;
-height:70px;
-border-radius:10px;
-object-fit:cover;
-background:#162749
-}
-
-.info{
-min-width:0;
-flex:1
-}
-
-.song h3{
-font-size:16px;
-margin:0 0 5px;
-overflow-wrap:anywhere
-}
-
-.song p{
-font-size:13px;
-color:var(--m);
-margin:0 0 10px
-}
-
-.btn{
-display:inline-block;
-background:var(--g);
-color:#06122a;
-font-weight:bold;
-border:0;
-border-radius:9px;
-padding:10px 13px;
-cursor:pointer
-}
-
-.share-btn{
-display:inline-block;
-background:#142f55;
-color:#fff;
-font-weight:bold;
-border:1px solid var(--g);
-border-radius:9px;
-padding:10px 13px;
-cursor:pointer;
-margin-top:7px
-}
-
-.empty{
-padding:22px;
-text-align:center;
-color:var(--m);
-background:var(--p);
-border-radius:12px
-}
-
-.player{
-display:none;
-background:linear-gradient(140deg,#122b50,#0c1c3b);
-border:2px solid var(--g);
-border-radius:16px;
-padding:18px;
-margin:18px 0;
-text-align:center
-}
-
-.player.show{
-display:block
-}
-
-.player img{
-width:120px;
-height:120px;
-border-radius:14px;
-object-fit:cover;
-margin:10px auto
-}
-
-.player h2{
-color:var(--g);
-font-size:20px
-}
-
-.player audio{
-width:100%;
-margin:15px 0
-}
-
-.player-status{
-background:#10284b;
-padding:12px;
-border-radius:10px;
-font-size:13px;
-color:#fff;
-margin-top:10px;
-min-height:0
-}
-
-.player-note{
-color:var(--m);
-font-size:12px;
-line-height:1.5
-}
-
-.foot{
-text-align:center;
-color:var(--m);
-padding:28px 10px;
-font-size:13px
-}
+body{margin:0;background:var(--n);color:#fff;font-family:Arial,sans-serif}
+.wrap{max-width:650px;margin:auto;padding:20px}
+.card{background:var(--p);border:1px solid #2b4065;border-radius:18px;padding:20px;text-align:center;margin-top:20px}
+h1{font-size:24px;color:var(--g)}
+img{width:140px;height:140px;border-radius:16px;object-fit:cover}
+p{color:#c4cee0;line-height:1.5}
+audio{width:100%;margin:18px 0}
+.btn{display:inline-block;background:var(--g);color:#06122a;text-decoration:none;font-weight:bold;border:0;border-radius:9px;padding:12px 16px;cursor:pointer}
+.status{background:#10284b;padding:12px;border-radius:10px;margin:12px 0}
+.small{font-size:12px;color:#9facbf}
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>BEST STREAMING SONG OF THE MONTH</h1>
-<p>Your music. Your moment. Your stage.</p>
-</header>
-
 <main class="wrap">
+  <div class="card">
 
-<section class="winner">
-<h2>🏆 OFFICIAL WINNER</h2>
-<div id="winnerBox">Winner will be announced here.</div>
-</section>
+    <h1 id="title">Loading song…</h1>
 
-<div class="meta">
-<span class="pill" id="status">Loading competition…</span>
-<span class="pill" id="dates">Opening and closing dates not set</span>
-</div>
+    <img id="photo" alt="Artiste photo" hidden>
 
-<section class="player" id="playerBox">
+    <p id="artist"></p>
 
-<h2>🎵 NOW PLAYING</h2>
+    <audio id="audio" controls preload="metadata"></audio>
 
-<img id="playerPhoto" alt="Song artwork" hidden>
+    <div class="status" id="status">
+      Loading song details…
+    </div>
 
-<h3 id="playerTitle">Select a song</h3>
+    <p>
+      Keep this page open and listen for at least 60 seconds.
+      One qualifying stream per account per song per month.
+    </p>
 
-<p id="playerArtist"></p>
+    <a class="btn" href="index.html">Back to rankings</a>
 
-<audio id="audio" controls preload="none" playsinline></audio>
+    <p class="small">
+      Keep Kulzzy Radio open in its original tab.
+      This listening page is separate.
+    </p>
 
-<div class="player-status" id="playerStatus">
-Select a song below to start listening.
-</div>
-
-<p class="player-note">
-Keep listening for at least 60 seconds to earn one qualifying stream.
-One qualifying stream per account, per song, per month.
-</p>
-
-</section>
-
-<h2 class="section-title">🔥 CURRENT TOP 3</h2>
-
-<div class="songs" id="topSongs">
-<div class="empty">Loading rankings…</div>
-</div>
-
-<h2 class="section-title">🎵 ALL SONGS</h2>
-
-<div class="songs" id="allSongs">
-<div class="empty">Loading songs…</div>
-</div>
-
-<div class="foot">
-KULZZY RADIO · Celebrating Lives Everyday
-</div>
-
+  </div>
 </main>
 
 <script type="module">
 
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import{getDatabase,ref,get,set,onValue}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{initializeApp}
+from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-/* FIREBASE CONFIGURATION */
+import{getDatabase,ref,get,set}
+from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-const cfg={
-apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkUXfb9pv9E",
-authDomain:"music-streaming-e724e.firebaseapp.com",
-databaseURL:"https://music-streaming-e724e-default-rtdb.europe-west1.firebasedatabase.app",
-projectId:"music-streaming-e724e",
-storageBucket:"music-streaming-e724e.firebasestorage.app",
-messagingSenderId:"543568067808",
-appId:"1:543568067808:web:495540085bf8b3e080a485",
-measurementId:"G-7KMXGYVCF9"
+import{getAuth,signInAnonymously}
+from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+const firebaseConfig={
+  apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkLUXfb9pv9E",
+  authDomain:"music-streaming-e724e.firebaseapp.com",
+  databaseURL:"https://music-streaming-e724e-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:"music-streaming-e724e",
+  storageBucket:"music-streaming-e724e.firebasestorage.app",
+  messagingSenderId:"543568067808",
+  appId:"1:543568067808:web:495540085bf8b3e080a485",
+  measurementId:"G-7KMXGYVCF9"
 };
 
-const app=initializeApp(cfg);
+const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const auth=getAuth(app);
 
 const $=id=>document.getElementById(id);
-
-const month=new Date().toISOString().slice(0,7).replace("-","");
-
-/* HTML ESCAPE */
-
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[c]));
-
-/* APP STATE */
-
-let songs={};
-let votes={};
-let settings={};
-let winner={};
-
-let currentSong=null;
-let seconds=0;
-let timer=null;
-let done=false;
-let started=false;
-let deepLinkHandled=false;
-
-const authPromise=signInAnonymously(auth);
-
-/* DATE FORMAT */
-
-function dt(v){
-
-if(!v)return"TBA";
-
-const d=new Date(v);
-
-return isNaN(d)?"TBA":d.toLocaleDateString();
-
-}
-
-/* COMPETITION STATUS */
-
-function competitionOpen(){
-
-if(
-settings.openDate&&
-Date.now()<new Date(settings.openDate).getTime()
-)return false;
-
-if(
-settings.closeDate&&
-Date.now()>new Date(settings.closeDate).getTime()
-)return false;
-
-return true;
-
-}
-
-/* SONG URL */
-
-function songURL(url){
-
-let u=url||"";
-
-const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-
-if(m){
-u="https://drive.google.com/uc?export=download&id="+m[1];
-}
-
-return u;
-
-}
-
-/* QUALIFYING STREAM COUNTS */
-
-function getPlays(id){
-
-let n=0;
-
-Object.values(votes[id]||{}).forEach(monthData=>{
-
-n+=Object.keys(monthData||{}).length;
-
-});
-
-return n;
-
-}
-
-/* CREATE SHAREABLE SONG NAME */
-
-function slugify(text){
-
-return String(text||"song")
-.toLowerCase()
-.trim()
-.replace(/[^a-z0-9]+/g,"-")
-.replace(/^-+|-+$/g,"")||"song";
-
-}
-
-/* GENERATE UNIQUE SONG LINK */
-
-function createSongLink(id){
-
-const song=songs[id];
-
-if(!song)return window.location.href;
-
-const title=slugify(
-(song.title||"song")+" "+(song.artist||"")
-);
-
-const url=new URL(window.location.href);
-
-url.search="";
-url.hash="";
-
-url.searchParams.set("song",id);
-url.searchParams.set("title",title);
-
-return url.toString();
-
-}
-
-/* SHARE SONG */
-
-async function shareSong(id,button){
-
-const song=songs[id];
-
-if(!song)return;
-
-const link=createSongLink(id);
-
-const title=song.title||"Untitled song";
-const artist=song.artist||"Unknown artiste";
-
-const message=
-"🎵 Listen to "+title+
-" by "+artist+
-" on Kulzzy Radio!\n\n"+
-"Your music. Your moment. Your stage.\n\n"+
-"LISTEN HERE:\n"+
-link;
-
-if(navigator.share){
-
-try{
-
-await navigator.share({
-title:title+" | Kulzzy Radio",
-text:message
-});
-
-return;
-
-}catch(error){
-
-if(error.name==="AbortError")return;
-
-console.warn("Sharing unavailable:",error);
-
-}
-
-}
-
-try{
-
-if(navigator.clipboard&&navigator.clipboard.writeText){
-
-await navigator.clipboard.writeText(message);
-
-}else{
-
-const input=document.createElement("textarea");
-
-input.value=message;
-input.style.position="fixed";
-input.style.top="0";
-input.style.left="-9999px";
-
-document.body.appendChild(input);
-
-input.focus();
-input.select();
-input.setSelectionRange(0,input.value.length);
-
-const copied=document.execCommand("copy");
-
-input.remove();
-
-if(!copied){
-throw new Error("Copy failed");
-}
-
-}
-
-const oldText=button.textContent;
-
-button.textContent="✓ LINK COPIED";
-
-setTimeout(()=>{
-button.textContent=oldText;
-},3000);
-
-}catch(error){
-
-console.error(error);
-
-prompt(
-"Copy this complete message and share it:",
-message
-);
-
-}
-
-}
-
-/* STOP CURRENT SONG */
-
-function stopPlayer(){
-
 const audio=$("audio");
 
-if(timer){
+const songId=new URLSearchParams(location.search).get("song");
 
-clearInterval(timer);
-timer=null;
+const now=new Date();
+const month=String(now.getFullYear())+
+            String(now.getMonth()+1).padStart(2,"0");
 
+let started=false;
+let seconds=0;
+let done=false;
+let timer=null;
+let recording=false;
+
+
+function message(text){
+  $("status").textContent=text;
 }
 
-audio.pause();
-audio.removeAttribute("src");
-audio.load();
 
-started=false;
-seconds=0;
-done=false;
-currentSong=null;
-
+function stopTimer(){
+  if(timer){
+    clearInterval(timer);
+    timer=null;
+  }
 }
 
-/*
-PLAYER-SPECIFIC STOP HOOK
-The external connector calls this function.
-*/
 
-window.KULZZY_STOP_PLAYER=function(detail){
+function stopMusicPage(){
 
-stopPlayer();
+  started=false;
 
-$("playerStatus").textContent=
-"Playback stopped because another Kulzzy Radio player started.";
+  stopTimer();
 
+  try{
+    audio.pause();
+    audio.removeAttribute("src");
+    audio.load();
+  }catch(error){}
+
+  if(!done){
+    seconds=0;
+    message("Playback stopped because another Kulzzy player started.");
+  }
+}
+
+
+/* UNIVERSAL MEDIA CONTROL STOP CONNECTION */
+
+window.KULZZY_STOP_PLAYER=function(){
+  stopMusicPage();
 };
 
-/* PLAY SONG */
-
-async function playSong(id){
-
-const song=songs[id];
-
-if(!song)return;
-
-stopPlayer();
-
-currentSong=id;
-
-$("playerBox").classList.add("show");
-
-$("playerTitle").textContent=
-song.title||"Untitled song";
-
-$("playerArtist").textContent=
-song.artist||"";
-
-const photo=$("playerPhoto");
-
-if(song.photo){
-
-photo.src=song.photo;
-photo.hidden=false;
-
-}else{
-
-photo.hidden=true;
-
-}
-
-const audio=$("audio");
-
-const url=songURL(song.url);
-
-if(!url){
-
-$("playerStatus").textContent=
-"This song has no playable audio link.";
-return;
-
-}
-
-if(!competitionOpen()){
-
-$("playerStatus").textContent=
-"The competition is not currently open.";
-return;
-
-}
-
-audio.src=url;
-audio.load();
-
-$("playerStatus").textContent=
-"Press play to begin listening.";
-
-$("playerBox").scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
-
-try{
-
-await audio.play();
-
-}catch(error){
-
-$("playerStatus").textContent=
-"Press the play button to start listening.";
-console.warn(error);
-
-}
-
-}
-
-/* AUDIO PLAY EVENT */
-
-$("audio").addEventListener("play",()=>{
-
-if(!currentSong)return;
-
-started=true;
-
-$("playerStatus").textContent=
-"Listening... Keep playing for 60 seconds.";
-
-if(!timer){
-
-timer=setInterval(()=>{
-
-const audio=$("audio");
-
-if(!started||audio.paused||audio.ended||done)return;
-
-seconds++;
-
-if(seconds>=60){
-
-done=true;
-
-clearInterval(timer);
-timer=null;
-
-recordStream();
-
-}
-
-},1000);
-
-}
-
-});
-
-/* AUDIO PAUSE EVENT */
-
-$("audio").addEventListener("pause",()=>{
-
-started=false;
-
-if(!done&&timer){
-
-clearInterval(timer);
-timer=null;
-
-}
-
-if(!done&&currentSong){
-
-$("playerStatus").textContent=
-"Listening paused. Resume to continue your qualifying stream.";
-
-}
-
-});
-
-/* AUDIO ENDED EVENT */
-
-$("audio").addEventListener("ended",()=>{
-
-started=false;
-
-if(timer){
-
-clearInterval(timer);
-timer=null;
-
-}
-
-if(!done){
-
-$("playerStatus").textContent=
-"Song ended before 60 seconds. Listen again to qualify.";
-
-}
-
-});
-
-/* AUDIO ERROR EVENT */
-
-$("audio").addEventListener("error",()=>{
-
-if(currentSong){
-
-$("playerStatus").textContent=
-"This song could not be played. Please try another song.";
-
-}
-
-});
 
 /* RECORD QUALIFYING STREAM */
 
 async function recordStream(){
 
-try{
+  if(recording)return;
 
-await authPromise;
+  recording=true;
 
-if(!auth.currentUser){
+  try{
 
-throw new Error("Authentication unavailable.");
+    const uid=auth.currentUser.uid;
 
+    const voteRef=ref(
+      db,
+      "votes/"+songId+"/"+month+"/"+uid
+    );
+
+    const previous=await get(voteRef);
+
+    if(previous.exists()){
+      message("You have already earned a qualifying stream for this song this month.");
+      return;
+    }
+
+    await set(voteRef,{
+      qualifiedAt:Date.now()
+    });
+
+    message("Thank you! Your qualifying stream has been recorded.");
+
+  }catch(error){
+
+    message("Could not record stream. Check database rules.");
+
+    console.error(error);
+
+  }finally{
+    recording=false;
+  }
 }
 
-const uid=auth.currentUser.uid;
-const songId=currentSong;
 
-if(!songId)return;
+/* LISTENING TIMER */
 
-const r=ref(
-db,
-"votes/"+songId+"/"+month+"/"+uid
-);
+function beginListening(){
 
-const old=await get(r);
+  if(done || timer)return;
 
-if(old.exists()){
+  started=true;
 
-$("playerStatus").textContent=
-"You have already recorded your qualifying stream for this song.";
+  timer=setInterval(async()=>{
 
-return;
+    if(
+      done ||
+      !started ||
+      audio.paused ||
+      audio.ended
+    ){
+      return;
+    }
 
+    seconds++;
+
+    if(seconds>=60){
+
+      done=true;
+
+      started=false;
+
+      stopTimer();
+
+      await recordStream();
+    }
+
+  },1000);
 }
 
-await set(r,{
-qualifiedAt:Date.now()
-});
 
-$("playerStatus").textContent=
-"🏆 Thank you! Your qualifying stream has been recorded successfully.";
+/* LOAD SONG */
 
-}catch(error){
+async function loadSong(){
 
-done=false;
+  if(!songId){
+    message("No song selected.");
+    return;
+  }
 
-$("playerStatus").textContent=
-"Could not record stream. Please try again.";
+  try{
 
-console.error(error);
+    await signInAnonymously(auth);
 
+    const songSnapshot=await get(
+      ref(db,"songs/"+songId)
+    );
+
+    const song=songSnapshot.val();
+
+    if(!song){
+      message("Song not found.");
+      return;
+    }
+
+    $("title").textContent=song.title||"Song";
+
+    $("artist").textContent=song.artist||"";
+
+    if(song.photo){
+      $("photo").src=song.photo;
+      $("photo").hidden=false;
+    }
+
+    let audioUrl=song.url||"";
+
+    const driveMatch=audioUrl.match(
+      /drive\.google\.com\/file\/d\/([^/]+)/
+    );
+
+    if(driveMatch){
+      audioUrl=
+        "https://drive.google.com/uc?export=download&id="+
+        driveMatch[1];
+    }
+
+    const settingsSnapshot=await get(
+      ref(db,"settings")
+    );
+
+    const settings=settingsSnapshot.val()||{};
+
+    if(
+      settings.openDate &&
+      Date.now()<new Date(settings.openDate).getTime()
+    ){
+      message("Competition has not opened yet.");
+      audio.controls=false;
+      return;
+    }
+
+    if(
+      settings.closeDate &&
+      Date.now()>new Date(settings.closeDate).getTime()
+    ){
+      message("Competition is closed.");
+      audio.controls=false;
+      return;
+    }
+
+    audio.src=audioUrl;
+
+    message("Press play to begin listening.");
+
+    audio.addEventListener("play",()=>{
+
+      if(done)return;
+
+      started=true;
+
+      beginListening();
+
+    });
+
+    audio.addEventListener("pause",()=>{
+
+      started=false;
+
+      if(!done){
+        message("Paused. Resume playback to continue.");
+      }
+
+    });
+
+    audio.addEventListener("ended",()=>{
+
+      started=false;
+
+      if(!done){
+        message("Song ended before 60 seconds. Listen again to qualify.");
+      }
+
+    });
+
+    audio.addEventListener("error",()=>{
+
+      if(!done){
+        message("Could not play this song. Please try again.");
+      }
+
+    });
+
+  }catch(error){
+
+    message("Could not load song. Check Firebase rules and song link.");
+
+    console.error(error);
+
+  }
 }
 
-}
 
-/* SONG CARD */
-
-function card(s){
-
-return`
-
-<article class="song">
-
-${s.photo?
-'<img alt="" src="'+esc(s.photo)+'">':
-'<div style="width:70px;height:70px;background:#162749;border-radius:10px;flex-shrink:0"></div>'
-}
-
-<div class="info">
-
-<h3>${esc(s.title||"Untitled song")}</h3>
-
-<p>
-${esc(s.artist||"Unknown artiste")}
-· ${s.plays} qualifying streams
-</p>
-
-<button class="btn" type="button" data-song="${esc(s.id)}">
-▶ LISTEN & SUPPORT
-</button>
-
-<br>
-
-<button class="share-btn" type="button" data-share-song="${esc(s.id)}">
-↗ SHARE SONG
-</button>
-
-</div>
-
-</article>
-
-`;
-
-}
-
-/* DISPLAY SONGS AND RANKINGS */
-
-function render(){
-
-const list=Object.entries(songs).map(([id,s])=>({
-
-id,
-...s,
-plays:getPlays(id)
-
-}))
-.filter(s=>s.active!==false)
-.sort((a,b)=>b.plays-a.plays);
-
-$("status").textContent=
-settings.openDate&&settings.closeDate?
-(Date.now()<new Date(settings.openDate).getTime()?
-"Competition opens soon":
-Date.now()>new Date(settings.closeDate).getTime()?
-"Competition closed":
-"Competition is open"):
-"Competition dates not set";
-
-$("dates").textContent=
-"Opens: "+dt(settings.openDate)+
-" · Closes: "+dt(settings.closeDate);
-
-$("winnerBox").innerHTML=winner.name?
-
-((winner.photo?
-'<img alt="" src="'+esc(winner.photo)+'">':
-"")+
-
-'<strong>'+esc(winner.name)+'</strong>'+
-
-'<p>'+esc(winner.songTitle||"")+'</p>'):
-
-"Winner will be announced here.";
-
-$("topSongs").innerHTML=list.length?
-
-list.slice(0,3).map(card).join(""):
-
-'<div class="empty">No songs have been added yet.</div>';
-
-$("allSongs").innerHTML=list.length?
-
-list.map(card).join(""):
-
-'<div class="empty">Songs will appear here soon.</div>';
-
-}
-
-/* HANDLE LISTEN AND SHARE BUTTONS */
-
-document.addEventListener("click",event=>{
-
-const listenButton=event.target.closest("[data-song]");
-
-if(listenButton){
-
-playSong(listenButton.dataset.song);
-
-return;
-
-}
-
-const shareButton=event.target.closest("[data-share-song]");
-
-if(shareButton){
-
-shareSong(
-shareButton.dataset.shareSong,
-shareButton
-);
-
-return;
-
-}
-
-});
-
-/* OPEN SPECIFIC SONG FROM SHARED LINK */
-
-function openSharedSong(){
-
-if(deepLinkHandled)return;
-
-const params=new URLSearchParams(window.location.search);
-
-const songId=params.get("song");
-
-if(!songId)return;
-
-if(!songs[songId])return;
-
-deepLinkHandled=true;
-
-playSong(songId);
-
-}
-
-/* FIREBASE SONG LISTENER */
-
-onValue(ref(db,"songs"),snapshot=>{
-
-songs=snapshot.val()||{};
-
-render();
-
-openSharedSong();
-
-},error=>{
-
-$("allSongs").innerHTML=
-'<div class="empty">Could not load songs. Check Firebase rules.</div>';
-
-console.error(error);
-
-});
-
-/* FIREBASE VOTES LISTENER */
-
-onValue(ref(db,"votes"),snapshot=>{
-
-votes=snapshot.val()||{};
-
-render();
-
-});
-
-/* FIREBASE SETTINGS LISTENER */
-
-onValue(ref(db,"settings"),snapshot=>{
-
-settings=snapshot.val()||{};
-
-render();
-
-});
-
-/* FIREBASE WINNER LISTENER */
-
-onValue(ref(db,"winner"),snapshot=>{
-
-winner=snapshot.val()||{};
-
-render();
-
-});
+loadSong();
 
 </script>
 
-<!-- EXTERNAL UNIVERSAL MEDIA CONNECTOR -->
+<!-- UNIVERSAL MEDIA CONTROL CONNECTOR -->
 <script src="./connector.js"></script>
 
 </body>
