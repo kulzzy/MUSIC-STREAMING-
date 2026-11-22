@@ -1,6 +1,6 @@
 /* ==========================================
    KULZZY RADIO MUSIC STREAMING CONNECTOR
-   UNIVERSAL MEDIA CONTROL VERSION 4.0
+   UNIVERSAL MEDIA CONTROL VERSION 4.1
 ========================================== */
 
 (function () {
@@ -10,12 +10,11 @@
   const PLAYER_NAME = "Music of the Month";
 
   const CONTROLLER_URL =
-    "https://raw.githubusercontent.com/kulzzy/KULZZY-UNIVERSAL-MEDIA-CONTROL/main/controller.js?v=4.0";
+    "https://raw.githubusercontent.com/kulzzy/KULZZY-UNIVERSAL-MEDIA-CONTROL/main/controller.js?v=4.1";
 
   window.KULZZY_MEDIA_PLAYER_CONFIG = {
     playerId: PLAYER_ID,
     playerName: PLAYER_NAME,
-
     mediaSelector: "audio,video",
 
     stop: function (detail) {
@@ -44,7 +43,7 @@
 
     script.onload = function () {
       console.log(
-        "[Kulzzy Music] Universal Media Control 4.0 connected."
+        "[Kulzzy Music] Universal Media Control 4.1 connected."
       );
     };
 
