@@ -23,48 +23,57 @@ audio{width:100%;margin:18px 0}
 </head>
 
 <body>
-
 <main class="wrap">
   <div class="card">
-
     <h1 id="title">Loading song…</h1>
-
     <img id="photo" alt="Artiste photo" hidden>
-
     <p id="artist"></p>
 
     <audio id="audio" controls preload="metadata"></audio>
 
-    <div class="status" id="status">
-      Loading song details…
-    </div>
+    <div class="status" id="status">Loading song details…</div>
 
-    <p>
-      Keep this page open and listen for at least 60 seconds.
-      One qualifying stream per account per song per month.
-    </p>
+    <p>Keep this page open and listen for at least 60 seconds. One qualifying stream per account per song per month.</p>
 
     <a class="btn" href="index.html">Back to rankings</a>
 
-    <p class="small">
-      Keep Kulzzy Radio open in its original tab.
-      This listening page is separate.
-    </p>
-
+    <p class="small">Your listening session works with Kulzzy Radio Universal Media Control.</p>
   </div>
 </main>
 
+<script>
+(function(){
+  "use strict";
+
+  window.KULZZY_STOP_PLAYER = function(){
+    var audio = document.getElementById("audio");
+
+    if(audio){
+      try{audio.pause()}catch(e){}
+    }
+
+    if(window.KULZZY_MUSIC_TIMER){
+      clearInterval(window.KULZZY_MUSIC_TIMER);
+      window.KULZZY_MUSIC_TIMER = null;
+    }
+
+    window.KULZZY_MUSIC_STARTED = false;
+
+    var status = document.getElementById("status");
+
+    if(status){
+      status.textContent = "Listening paused because another Kulzzy Radio player started.";
+    }
+  };
+})();
+</script>
+
+<script src="./connector.js"></script>
+
 <script type="module">
-
-import{initializeApp}
-from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import{getDatabase,ref,get,set}
-from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-import{getAuth,signInAnonymously}
-from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getDatabase,ref,get,set}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import{getAuth,signInAnonymously}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyAYZyCFYGP2Kk_JUiyc9N9TkLUXfb9pv9E",
@@ -77,75 +86,56 @@ const firebaseConfig={
   measurementId:"G-7KMXGYVCF9"
 };
 
-const app=initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig,"KulzzyMusicListeningPage");
 const db=getDatabase(app);
 const auth=getAuth(app);
-
 const $=id=>document.getElementById(id);
-const audio=$("audio");
 
 const songId=new URLSearchParams(location.search).get("song");
 
-const now=new Date();
-const month=String(now.getFullYear())+
-            String(now.getMonth()+1).padStart(2,"0");
+function getLagosMonth(){
+  const parts=new Intl.DateTimeFormat("en-CA",{
+    timeZone:"Africa/Lagos",
+    year:"numeric",
+    month:"2-digit"
+  }).formatToParts(new Date());
 
-let started=false;
+  const year=parts.find(p=>p.type==="year").value;
+  const month=parts.find(p=>p.type==="month").value;
+
+  return year+month;
+}
+
+const month=getLagosMonth();
+
 let seconds=0;
-let done=false;
+let completed=false;
+let started=false;
 let timer=null;
 let recording=false;
-
 
 function message(text){
   $("status").textContent=text;
 }
 
-
 function stopTimer(){
+  started=false;
+
   if(timer){
     clearInterval(timer);
     timer=null;
   }
+
+  window.KULZZY_MUSIC_TIMER=null;
 }
 
+async function recordQualifyingStream(){
+  if(completed||recording)return;
 
-function stopMusicPage(){
-
-  started=false;
-
+  recording=true;
   stopTimer();
 
   try{
-    audio.pause();
-    audio.removeAttribute("src");
-    audio.load();
-  }catch(error){}
-
-  if(!done){
-    seconds=0;
-    message("Playback stopped because another Kulzzy player started.");
-  }
-}
-
-
-/* UNIVERSAL MEDIA CONTROL STOP CONNECTION */
-
-window.KULZZY_STOP_PLAYER=function(){
-  stopMusicPage();
-};
-
-
-/* RECORD QUALIFYING STREAM */
-
-async function recordStream(){
-
-  if(recording)return;
-
-  recording=true;
-
-  try{
-
     const uid=auth.currentUser.uid;
 
     const voteRef=ref(
@@ -153,9 +143,10 @@ async function recordStream(){
       "votes/"+songId+"/"+month+"/"+uid
     );
 
-    const previous=await get(voteRef);
+    const existing=await get(voteRef);
 
-    if(previous.exists()){
+    if(existing.exists()){
+      completed=true;
       message("You have already earned a qualifying stream for this song this month.");
       return;
     }
@@ -164,67 +155,46 @@ async function recordStream(){
       qualifiedAt:Date.now()
     });
 
+    completed=true;
+
     message("Thank you! Your qualifying stream has been recorded.");
 
   }catch(error){
-
-    message("Could not record stream. Check database rules.");
-
-    console.error(error);
-
+    completed=false;
+    message("Could not record stream. Please try again.");
+    console.error("[Kulzzy Music] Stream recording error:",error);
   }finally{
     recording=false;
   }
 }
 
-
-/* LISTENING TIMER */
-
-function beginListening(){
-
-  if(done || timer)return;
+function startTimer(){
+  if(completed||recording||timer)return;
 
   started=true;
 
-  timer=setInterval(async()=>{
+  timer=setInterval(function(){
+    const audio=$("audio");
 
-    if(
-      done ||
-      !started ||
-      audio.paused ||
-      audio.ended
-    ){
-      return;
-    }
+    if(!started||audio.paused||audio.ended)return;
 
     seconds++;
 
     if(seconds>=60){
-
-      done=true;
-
-      started=false;
-
-      stopTimer();
-
-      await recordStream();
+      recordQualifyingStream();
     }
-
   },1000);
+
+  window.KULZZY_MUSIC_TIMER=timer;
 }
 
-
-/* LOAD SONG */
-
-async function loadSong(){
-
+async function start(){
   if(!songId){
     message("No song selected.");
     return;
   }
 
   try{
-
     await signInAnonymously(auth);
 
     const songSnapshot=await get(
@@ -239,7 +209,6 @@ async function loadSong(){
     }
 
     $("title").textContent=song.title||"Song";
-
     $("artist").textContent=song.artist||"";
 
     if(song.photo){
@@ -259,88 +228,68 @@ async function loadSong(){
         driveMatch[1];
     }
 
+    if(!audioUrl){
+      message("This song has no audio link.");
+      return;
+    }
+
+    $("audio").src=audioUrl;
+
     const settingsSnapshot=await get(
       ref(db,"settings")
     );
 
     const settings=settingsSnapshot.val()||{};
+    const now=Date.now();
 
-    if(
-      settings.openDate &&
-      Date.now()<new Date(settings.openDate).getTime()
-    ){
+    if(settings.openDate&&now<new Date(settings.openDate).getTime()){
       message("Competition has not opened yet.");
-      audio.controls=false;
+      $("audio").controls=false;
       return;
     }
 
-    if(
-      settings.closeDate &&
-      Date.now()>new Date(settings.closeDate).getTime()
-    ){
+    if(settings.closeDate&&now>new Date(settings.closeDate).getTime()){
       message("Competition is closed.");
-      audio.controls=false;
+      $("audio").controls=false;
       return;
     }
-
-    audio.src=audioUrl;
 
     message("Press play to begin listening.");
 
-    audio.addEventListener("play",()=>{
-
-      if(done)return;
-
-      started=true;
-
-      beginListening();
-
+    $("audio").addEventListener("play",function(){
+      if(!completed&&!recording){
+        startTimer();
+      }
     });
 
-    audio.addEventListener("pause",()=>{
+    $("audio").addEventListener("pause",function(){
+      stopTimer();
 
-      started=false;
-
-      if(!done){
+      if(!completed){
         message("Paused. Resume playback to continue.");
       }
-
     });
 
-    audio.addEventListener("ended",()=>{
+    $("audio").addEventListener("ended",function(){
+      stopTimer();
 
-      started=false;
-
-      if(!done){
-        message("Song ended before 60 seconds. Listen again to qualify.");
+      if(!completed){
+        message("Listening ended before the 60-second qualification.");
       }
-
     });
 
-    audio.addEventListener("error",()=>{
-
-      if(!done){
-        message("Could not play this song. Please try again.");
-      }
-
+    $("audio").addEventListener("error",function(){
+      stopTimer();
+      message("Could not play this song. Please check the audio link.");
     });
 
   }catch(error){
-
-    message("Could not load song. Check Firebase rules and song link.");
-
-    console.error(error);
-
+    message("Could not load song. Please try again.");
+    console.error("[Kulzzy Music] Loading error:",error);
   }
 }
 
-
-loadSong();
-
+start();
 </script>
-
-<!-- UNIVERSAL MEDIA CONTROL CONNECTOR -->
-<script src="./connector.js"></script>
-
 </body>
 </html>
