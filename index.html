@@ -13,36 +13,213 @@
 --g:#ffd700;
 --m:#b8c2d8;
 }
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--n);color:#fff;font-family:Arial,sans-serif}
-header{text-align:center;padding:15px 14px 18px;background:linear-gradient(140deg,#0b2046,#06122a);border-bottom:1px solid #293b5d}
-header h1{color:var(--g);font-size:clamp(22px,5vw,34px);margin:0 0 8px}
-header p{margin:0;color:#e8edf7}
-.wrap{max-width:1000px;margin:auto;padding:16px}
-.winner{background:linear-gradient(120deg,#332b00,#122447);border:1px solid var(--g);border-radius:16px;padding:18px;text-align:center;margin-bottom:18px}
-.winner h2,.section-title{color:var(--g)}
-.winner h2{margin:0 0 10px}
-.winner img{width:92px;height:92px;border-radius:50%;object-fit:cover;border:2px solid var(--g)}
-.winner strong{display:block;font-size:20px;margin-top:8px}
-.meta{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.pill{background:#14284b;border:1px solid #2a426a;border-radius:999px;padding:8px 12px;font-size:13px}
-.songs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.song{background:var(--p);border:1px solid #23385e;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center;min-width:0}
-.song img{width:70px;height:70px;border-radius:10px;object-fit:cover;background:#162749}
-.info{min-width:0;flex:1}
-.song h3{font-size:16px;margin:0 0 5px;overflow-wrap:anywhere}
-.song p{font-size:13px;color:var(--m);margin:0 0 10px}
-.btn{display:inline-block;background:var(--g);color:#06122a;font-weight:bold;border:0;border-radius:9px;padding:10px 13px;cursor:pointer}
-.share-btn{display:inline-block;background:#142f55;color:#fff;font-weight:bold;border:1px solid var(--g);border-radius:9px;padding:10px 13px;cursor:pointer;margin-top:7px}
-.empty{padding:22px;text-align:center;color:var(--m);background:var(--p);border-radius:12px}
-.player{display:none;background:linear-gradient(140deg,#122b50,#0c1c3b);border:2px solid var(--g);border-radius:16px;padding:18px;margin:18px 0;text-align:center}
-.player.show{display:block}
-.player img{width:120px;height:120px;border-radius:14px;object-fit:cover;margin:10px auto}
-.player h2{color:var(--g);font-size:20px}
-.player audio{width:100%;margin:15px 0}
-.player-status{background:#10284b;padding:12px;border-radius:10px;font-size:13px;color:#fff;margin-top:10px;min-height:0}
-.player-note{color:var(--m);font-size:12px;line-height:1.5}
-.foot{text-align:center;color:var(--m);padding:28px 10px;font-size:13px}
+
+body{
+margin:0;
+background:var(--n);
+color:#fff;
+font-family:Arial,sans-serif
+}
+
+header{
+text-align:center;
+padding:15px 14px 18px;
+background:linear-gradient(140deg,#0b2046,#06122a);
+border-bottom:1px solid #293b5d
+}
+
+header h1{
+color:var(--g);
+font-size:clamp(22px,5vw,34px);
+margin:0 0 8px
+}
+
+header p{
+margin:0;
+color:#e8edf7
+}
+
+.wrap{
+max-width:1000px;
+margin:auto;
+padding:16px
+}
+
+.winner{
+background:linear-gradient(120deg,#332b00,#122447);
+border:1px solid var(--g);
+border-radius:16px;
+padding:18px;
+text-align:center;
+margin-bottom:18px
+}
+
+.winner h2,.section-title{
+color:var(--g)
+}
+
+.winner h2{
+margin:0 0 10px
+}
+
+.winner img{
+width:92px;
+height:92px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid var(--g)
+}
+
+.winner strong{
+display:block;
+font-size:20px;
+margin-top:8px
+}
+
+.meta{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:12px 0
+}
+
+.pill{
+background:#14284b;
+border:1px solid #2a426a;
+border-radius:999px;
+padding:8px 12px;
+font-size:13px
+}
+
+.songs{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:12px
+}
+
+.song{
+background:var(--p);
+border:1px solid #23385e;
+border-radius:14px;
+padding:14px;
+display:flex;
+gap:12px;
+align-items:center;
+min-width:0
+}
+
+.song img{
+width:70px;
+height:70px;
+border-radius:10px;
+object-fit:cover;
+background:#162749
+}
+
+.info{
+min-width:0;
+flex:1
+}
+
+.song h3{
+font-size:16px;
+margin:0 0 5px;
+overflow-wrap:anywhere
+}
+
+.song p{
+font-size:13px;
+color:var(--m);
+margin:0 0 10px
+}
+
+.btn{
+display:inline-block;
+background:var(--g);
+color:#06122a;
+font-weight:bold;
+border:0;
+border-radius:9px;
+padding:10px 13px;
+cursor:pointer
+}
+
+.share-btn{
+display:inline-block;
+background:#142f55;
+color:#fff;
+font-weight:bold;
+border:1px solid var(--g);
+border-radius:9px;
+padding:10px 13px;
+cursor:pointer;
+margin-top:7px
+}
+
+.empty{
+padding:22px;
+text-align:center;
+color:var(--m);
+background:var(--p);
+border-radius:12px
+}
+
+.player{
+display:none;
+background:linear-gradient(140deg,#122b50,#0c1c3b);
+border:2px solid var(--g);
+border-radius:16px;
+padding:18px;
+margin:18px 0;
+text-align:center
+}
+
+.player.show{
+display:block
+}
+
+.player img{
+width:120px;
+height:120px;
+border-radius:14px;
+object-fit:cover;
+margin:10px auto
+}
+
+.player h2{
+color:var(--g);
+font-size:20px
+}
+
+.player audio{
+width:100%;
+margin:15px 0
+}
+
+.player-status{
+background:#10284b;
+padding:12px;
+border-radius:10px;
+font-size:13px;
+color:#fff;
+margin-top:10px;
+min-height:0
+}
+
+.player-note{
+color:var(--m);
+font-size:12px;
+line-height:1.5
+}
+
+.foot{
+text-align:center;
+color:var(--m);
+padding:28px 10px;
+font-size:13px
+}
 </style>
 </head>
 
@@ -66,26 +243,36 @@ header p{margin:0;color:#e8edf7}
 </div>
 
 <section class="player" id="playerBox">
+
 <h2>🎵 NOW PLAYING</h2>
+
 <img id="playerPhoto" alt="Song artwork" hidden>
+
 <h3 id="playerTitle">Select a song</h3>
+
 <p id="playerArtist"></p>
+
 <audio id="audio" controls preload="none" playsinline></audio>
+
 <div class="player-status" id="playerStatus">
 Select a song below to start listening.
 </div>
+
 <p class="player-note">
 Keep listening for at least 60 seconds to earn one qualifying stream.
-One qualifying stream per account, per song, per competition month.
+One qualifying stream per account, per song, per month.
 </p>
+
 </section>
 
 <h2 class="section-title">🔥 CURRENT TOP 3</h2>
+
 <div class="songs" id="topSongs">
 <div class="empty">Loading rankings…</div>
 </div>
 
 <h2 class="section-title">🎵 ALL SONGS</h2>
+
 <div class="songs" id="allSongs">
 <div class="empty">Loading songs…</div>
 </div>
@@ -118,7 +305,10 @@ measurementId:"G-7KMXGYVCF9"
 const app=initializeApp(cfg);
 const db=getDatabase(app);
 const auth=getAuth(app);
+
 const $=id=>document.getElementById(id);
+
+const month=new Date().toISOString().slice(0,7).replace("-","");
 
 /* HTML ESCAPE */
 
@@ -146,36 +336,34 @@ let deepLinkHandled=false;
 
 const authPromise=signInAnonymously(auth);
 
-/* OFFICIAL COMPETITION MONTH
-   This value comes from the admin settings.
-   It does not depend on the listener's country,
-   device clock or time zone.
-*/
-
-function getCompetitionMonth(){
-const month=String(settings.competitionMonth||"");
-return /^\d{6}$/.test(month)?month:"";
-}
-
 /* DATE FORMAT */
 
 function dt(v){
+
 if(!v)return"TBA";
+
 const d=new Date(v);
+
 return isNaN(d)?"TBA":d.toLocaleDateString();
+
 }
 
 /* COMPETITION STATUS */
 
 function competitionOpen(){
 
-if(!settings.openDate||!settings.closeDate)return false;
+if(
+settings.openDate&&
+Date.now()<new Date(settings.openDate).getTime()
+)return false;
 
-if(Date.now()<new Date(settings.openDate).getTime())return false;
-
-if(Date.now()>new Date(settings.closeDate).getTime())return false;
+if(
+settings.closeDate&&
+Date.now()>new Date(settings.closeDate).getTime()
+)return false;
 
 return true;
+
 }
 
 /* SONG URL */
@@ -183,6 +371,7 @@ return true;
 function songURL(url){
 
 let u=url||"";
+
 const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/);
 
 if(m){
@@ -190,21 +379,23 @@ u="https://drive.google.com/uc?export=download&id="+m[1];
 }
 
 return u;
+
 }
 
-/* QUALIFYING STREAM COUNTS
-   Only count the official competition month.
-*/
+/* QUALIFYING STREAM COUNTS */
 
 function getPlays(id){
 
-const month=getCompetitionMonth();
+let n=0;
 
-if(!month)return 0;
+Object.values(votes[id]||{}).forEach(monthData=>{
 
-const monthData=(votes[id]||{})[month]||{};
+n+=Object.keys(monthData||{}).length;
 
-return Object.keys(monthData).length;
+});
+
+return n;
+
 }
 
 /* CREATE SHAREABLE SONG NAME */
@@ -227,16 +418,20 @@ const song=songs[id];
 
 if(!song)return window.location.href;
 
-const title=slugify((song.title||"song")+" "+(song.artist||""));
+const title=slugify(
+(song.title||"song")+" "+(song.artist||"")
+);
 
 const url=new URL(window.location.href);
 
 url.search="";
 url.hash="";
+
 url.searchParams.set("song",id);
 url.searchParams.set("title",title);
 
 return url.toString();
+
 }
 
 /* SHARE SONG */
@@ -244,9 +439,11 @@ return url.toString();
 async function shareSong(id,button){
 
 const song=songs[id];
+
 if(!song)return;
 
 const link=createSongLink(id);
+
 const title=song.title||"Untitled song";
 const artist=song.artist||"Unknown artiste";
 
@@ -261,14 +458,20 @@ link;
 if(navigator.share){
 
 try{
+
 await navigator.share({
 title:title+" | Kulzzy Radio",
 text:message
 });
+
 return;
+
 }catch(error){
+
 if(error.name==="AbortError")return;
+
 console.warn("Sharing unavailable:",error);
+
 }
 
 }
@@ -282,24 +485,30 @@ await navigator.clipboard.writeText(message);
 }else{
 
 const input=document.createElement("textarea");
+
 input.value=message;
 input.style.position="fixed";
 input.style.top="0";
 input.style.left="-9999px";
 
 document.body.appendChild(input);
+
 input.focus();
 input.select();
 input.setSelectionRange(0,input.value.length);
 
 const copied=document.execCommand("copy");
+
 input.remove();
 
-if(!copied)throw new Error("Copy failed");
+if(!copied){
+throw new Error("Copy failed");
+}
 
 }
 
 const oldText=button.textContent;
+
 button.textContent="✓ LINK COPIED";
 
 setTimeout(()=>{
@@ -309,7 +518,11 @@ button.textContent=oldText;
 }catch(error){
 
 console.error(error);
-prompt("Copy this complete message and share it:",message);
+
+prompt(
+"Copy this complete message and share it:",
+message
+);
 
 }
 
@@ -322,8 +535,10 @@ function stopPlayer(){
 const audio=$("audio");
 
 if(timer){
+
 clearInterval(timer);
 timer=null;
+
 }
 
 audio.pause();
@@ -334,9 +549,13 @@ started=false;
 seconds=0;
 done=false;
 currentSong=null;
+
 }
 
-/* PLAYER-SPECIFIC STOP HOOK */
+/*
+PLAYER-SPECIFIC STOP HOOK
+The external connector calls this function.
+*/
 
 window.KULZZY_STOP_PLAYER=function(detail){
 
@@ -352,6 +571,7 @@ $("playerStatus").textContent=
 async function playSong(id){
 
 const song=songs[id];
+
 if(!song)return;
 
 stopPlayer();
@@ -359,41 +579,51 @@ stopPlayer();
 currentSong=id;
 
 $("playerBox").classList.add("show");
-$("playerTitle").textContent=song.title||"Untitled song";
-$("playerArtist").textContent=song.artist||"";
+
+$("playerTitle").textContent=
+song.title||"Untitled song";
+
+$("playerArtist").textContent=
+song.artist||"";
 
 const photo=$("playerPhoto");
 
 if(song.photo){
+
 photo.src=song.photo;
 photo.hidden=false;
+
 }else{
+
 photo.hidden=true;
+
 }
 
 const audio=$("audio");
+
 const url=songURL(song.url);
 
 if(!url){
-$("playerStatus").textContent="This song has no playable audio link.";
+
+$("playerStatus").textContent=
+"This song has no playable audio link.";
 return;
+
 }
 
 if(!competitionOpen()){
-$("playerStatus").textContent="The competition is not currently open.";
-return;
-}
 
-if(!getCompetitionMonth()){
 $("playerStatus").textContent=
-"The official competition month has not been set by the admin yet.";
+"The competition is not currently open.";
 return;
+
 }
 
 audio.src=url;
 audio.load();
 
-$("playerStatus").textContent="Press play to begin listening.";
+$("playerStatus").textContent=
+"Press play to begin listening.";
 
 $("playerBox").scrollIntoView({
 behavior:"smooth",
@@ -401,10 +631,15 @@ block:"start"
 });
 
 try{
+
 await audio.play();
+
 }catch(error){
-$("playerStatus").textContent="Press the play button to start listening.";
+
+$("playerStatus").textContent=
+"Press the play button to start listening.";
 console.warn(error);
+
 }
 
 }
@@ -433,8 +668,10 @@ seconds++;
 if(seconds>=60){
 
 done=true;
+
 clearInterval(timer);
 timer=null;
+
 recordStream();
 
 }
@@ -452,13 +689,17 @@ $("audio").addEventListener("pause",()=>{
 started=false;
 
 if(!done&&timer){
+
 clearInterval(timer);
 timer=null;
+
 }
 
 if(!done&&currentSong){
+
 $("playerStatus").textContent=
 "Listening paused. Resume to continue your qualifying stream.";
+
 }
 
 });
@@ -470,13 +711,17 @@ $("audio").addEventListener("ended",()=>{
 started=false;
 
 if(timer){
+
 clearInterval(timer);
 timer=null;
+
 }
 
 if(!done){
+
 $("playerStatus").textContent=
 "Song ended before 60 seconds. Listen again to qualify.";
+
 }
 
 });
@@ -486,8 +731,10 @@ $("playerStatus").textContent=
 $("audio").addEventListener("error",()=>{
 
 if(currentSong){
+
 $("playerStatus").textContent=
 "This song could not be played. Please try another song.";
+
 }
 
 });
@@ -501,28 +748,15 @@ try{
 await authPromise;
 
 if(!auth.currentUser){
+
 throw new Error("Authentication unavailable.");
+
 }
 
 const uid=auth.currentUser.uid;
 const songId=currentSong;
-const month=getCompetitionMonth();
 
 if(!songId)return;
-
-if(!month){
-done=false;
-$("playerStatus").textContent=
-"The official competition month has not been set by the admin.";
-return;
-}
-
-if(!competitionOpen()){
-done=false;
-$("playerStatus").textContent=
-"The competition is no longer open.";
-return;
-}
 
 const r=ref(
 db,
@@ -534,14 +768,14 @@ const old=await get(r);
 if(old.exists()){
 
 $("playerStatus").textContent=
-"You have already recorded your qualifying stream for this song this month.";
+"You have already recorded your qualifying stream for this song.";
 
 return;
+
 }
 
 await set(r,{
-qualifiedAt:Date.now(),
-competitionMonth:month
+qualifiedAt:Date.now()
 });
 
 $("playerStatus").textContent=
@@ -593,7 +827,9 @@ ${esc(s.artist||"Unknown artiste")}
 </button>
 
 </div>
+
 </article>
+
 `;
 
 }
@@ -602,37 +838,24 @@ ${esc(s.artist||"Unknown artiste")}
 
 function render(){
 
-const month=getCompetitionMonth();
-
 const list=Object.entries(songs).map(([id,s])=>({
+
 id,
 ...s,
 plays:getPlays(id)
+
 }))
 .filter(s=>s.active!==false)
 .sort((a,b)=>b.plays-a.plays);
 
-if(!month){
-
-$("status").textContent="Official competition month not set";
-
-}else if(!settings.openDate||!settings.closeDate){
-
-$("status").textContent="Competition dates not set";
-
-}else if(Date.now()<new Date(settings.openDate).getTime()){
-
-$("status").textContent="Competition opens soon";
-
-}else if(Date.now()>new Date(settings.closeDate).getTime()){
-
-$("status").textContent="Competition closed";
-
-}else{
-
-$("status").textContent="Competition is open";
-
-}
+$("status").textContent=
+settings.openDate&&settings.closeDate?
+(Date.now()<new Date(settings.openDate).getTime()?
+"Competition opens soon":
+Date.now()>new Date(settings.closeDate).getTime()?
+"Competition closed":
+"Competition is open"):
+"Competition dates not set";
 
 $("dates").textContent=
 "Opens: "+dt(settings.openDate)+
@@ -643,17 +866,23 @@ $("winnerBox").innerHTML=winner.name?
 ((winner.photo?
 '<img alt="" src="'+esc(winner.photo)+'">':
 "")+
+
 '<strong>'+esc(winner.name)+'</strong>'+
+
 '<p>'+esc(winner.songTitle||"")+'</p>'):
 
 "Winner will be announced here.";
 
 $("topSongs").innerHTML=list.length?
+
 list.slice(0,3).map(card).join(""):
+
 '<div class="empty">No songs have been added yet.</div>';
 
 $("allSongs").innerHTML=list.length?
+
 list.map(card).join(""):
+
 '<div class="empty">Songs will appear here soon.</div>';
 
 }
@@ -665,15 +894,24 @@ document.addEventListener("click",event=>{
 const listenButton=event.target.closest("[data-song]");
 
 if(listenButton){
+
 playSong(listenButton.dataset.song);
+
 return;
+
 }
 
 const shareButton=event.target.closest("[data-share-song]");
 
 if(shareButton){
-shareSong(shareButton.dataset.shareSong,shareButton);
+
+shareSong(
+shareButton.dataset.shareSong,
+shareButton
+);
+
 return;
+
 }
 
 });
@@ -685,12 +923,15 @@ function openSharedSong(){
 if(deepLinkHandled)return;
 
 const params=new URLSearchParams(window.location.search);
+
 const songId=params.get("song");
 
 if(!songId)return;
+
 if(!songs[songId])return;
 
 deepLinkHandled=true;
+
 playSong(songId);
 
 }
@@ -702,6 +943,7 @@ onValue(ref(db,"songs"),snapshot=>{
 songs=snapshot.val()||{};
 
 render();
+
 openSharedSong();
 
 },error=>{
@@ -718,6 +960,7 @@ console.error(error);
 onValue(ref(db,"votes"),snapshot=>{
 
 votes=snapshot.val()||{};
+
 render();
 
 });
@@ -727,6 +970,7 @@ render();
 onValue(ref(db,"settings"),snapshot=>{
 
 settings=snapshot.val()||{};
+
 render();
 
 });
@@ -736,6 +980,7 @@ render();
 onValue(ref(db,"winner"),snapshot=>{
 
 winner=snapshot.val()||{};
+
 render();
 
 });
