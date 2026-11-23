@@ -5,7 +5,7 @@
   const PLAYER_NAME = "Music of the Month";
 
   const CONTROLLER_URL =
-    "https://raw.githubusercontent.com/kulzzy/KULZZY-UNIVERSAL-MEDIA-CONTROL/main/controller.js?v=5.0";
+    "https://cdn.jsdelivr.net/gh/kulzzy/KULZZY-UNIVERSAL-MEDIA-CONTROL@main/controller.js";
 
   window.KULZZY_MEDIA_PLAYER_CONFIG = {
     playerId: PLAYER_ID,
@@ -33,6 +33,10 @@
     script.id = "kulzzy-universal-controller";
     script.src = CONTROLLER_URL;
     script.async = true;
+
+    script.onerror = function () {
+      console.error("Kulzzy controller failed to load.");
+    };
 
     document.head.appendChild(script);
   }
